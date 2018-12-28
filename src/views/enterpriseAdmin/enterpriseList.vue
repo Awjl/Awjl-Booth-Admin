@@ -36,7 +36,7 @@
           <el-table-column prop='state' label='认证状态' align='center'></el-table-column>
           <el-table-column label='操作' align='center'>
             <template slot-scope='scope'>
-              <el-button type='primary' size='small'>查看详情</el-button>
+              <el-button type='primary' size='small' @click="toDetails(1)">查看详情</el-button>
               <el-button type='danger' size='small'>删除</el-button>
             </template>
           </el-table-column>
@@ -91,6 +91,12 @@ export default {
   computed: {},
   created() {},
   methods: {
+    toDetails(id) {
+      console.log(id)
+      this.$router.push({
+        path: `/enterpriseDetails/${id}`
+      })
+    },
     handleSizeChange(val) {
       this.dataAll.limit = val
     },

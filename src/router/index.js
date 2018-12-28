@@ -51,15 +51,15 @@ export const constantRouterMap = [
       icon: 'user'
     },
     children: [{
-      path: 'enterpriseAdmin',
+      path: '/enterpriseAdmin',
       component: () => import('@/views/enterpriseAdmin/enterpriseList'),
       name: 'footshopping',
       meta: { title: '企业管理', icon: 'user', noCache: true }
     },
     {
-      path: 'addshopping/:id',
+      path: '/enterpriseDetails/:id',
       component: () => import('@/views/enterpriseAdmin/enterpriseDetails'),
-      name: 'addshopping',
+      name: '/enterpriseDetails',
       meta: { title: '企业详情', noCache: true },
       hidden: true
     }

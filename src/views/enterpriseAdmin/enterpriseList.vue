@@ -1,110 +1,160 @@
 <template>
-  <div class='banner'>
-    <div class='banneradd'>
-      <el-input style="width: 150px;" class="filter-item" placeholder="请输入企业名称" >
-      </el-input>
-      <el-select clearable style="width: 150px" class="filter-item"  placeholder="选择认证状态" v-model="dataAll.isUpper">
-        <el-option label="已认证" :value="1">
-          已认证
-        </el-option>
-        <el-option label="未认证" :value="2">
-          未认证
-        </el-option>
+  <div class="banner">
+    <div class="banneradd">
+      <el-input
+        style="width: 150px;"
+        class="filter-item"
+        placeholder="请输入企业名称"
+        v-model="upDataList.name"
+      ></el-input>
+      <el-select
+        clearable
+        style="width: 150px"
+        class="filter-item"
+        placeholder="选择认证状态"
+        v-model="upDataList.isAuthenticate"
+      >
+        <el-option label="已认证" :value="0">等待认证</el-option>
+        <el-option label="未认证" :value="1">已认证</el-option>
+        <el-option label="未认证" :value="2">未认证</el-option>
       </el-select>
-      <el-date-picker v-model="dataArr" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-      </el-date-picker>
-      <el-button class="filter-item" type="primary" icon="el-icon-search">搜索</el-button>
+      <el-date-picker
+        v-model="dataArr"
+        type="daterange"
+        range-separator="-"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        value-format="yyyy-MM-dd"
+        format="yyyy-MM-dd"
+      ></el-date-picker>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="suchbox">搜索</el-button>
     </div>
-    <div class='dataAll-box'>
-      <div class='filter-container'>
-        <el-table :data='dataAll.dataList' border style='width: 100%' v-loading='loading'>
-          <el-table-column prop='id' label='ID' align='center'></el-table-column>
-          <el-table-column prop='titel' label='企业名称' align='center'></el-table-column>
-          <el-table-column label='企业Logo' align='center'>
-            <template slot-scope='scope'>
-              <div class='box-img'>
-                <img :src='scope.row.logo' alt align='center'>
+    <div class="dataAll-box">
+      <div class="filter-container">
+        <el-table :data="dataAll.list" border style="width: 100%" v-loading="loading">
+          <el-table-column prop="id" label="ID" align="center"></el-table-column>
+          <el-table-column prop="name" label="企业名称" align="center"></el-table-column>
+          <el-table-column label="企业Logo" align="center">
+            <template slot-scope="scope">
+              <div class="box-img">
+                <img :src="scope.row.logoUrl" alt align="center">
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop='num' label='产品册数量' align='center'></el-table-column>
-          <el-table-column prop='industry' label='所属行业' align='center'></el-table-column>
-          <el-table-column prop='Customer' label='主要客户' align='center'></el-table-column>
-          <el-table-column prop='Supplier' label='主要供应商' align='center'>
+          <el-table-column prop="industryName" label="所属行业" align="center"></el-table-column>
+          <el-table-column prop="customer" label="主要客户" align="center">
+            <template slot-scope="scope">
+              <div
+                v-for="(item, index) in JSON.parse(scope.row.customer)"
+                :key="index"
+                v-show="item.key != `点击输入`"
+              >{{item.key}}</div>
+              <div v-if="scope.row.customer.split('点击输入').length - 1 == 5">暂无数据</div>
+            </template>
           </el-table-column>
-          <el-table-column prop='upTime' label='注册时间' align='center'></el-table-column>
-          <el-table-column prop='state' label='认证状态' align='center'></el-table-column>
-          <el-table-column label='操作' align='center'>
-            <template slot-scope='scope'>
-              <el-button type='primary' size='small' @click="toDetails(1)">查看详情</el-button>
-              <el-button type='danger' size='small'>删除</el-button>
+          <el-table-column prop="facilitator" label="主要供应商" align="center">
+            <template slot-scope="scope">
+              <div
+                v-for="(item, index) in JSON.parse(scope.row.facilitator)"
+                :key="index"
+                v-show="item.key != `点击输入`"
+              >{{item.key}}</div>
+              <div v-if="scope.row.facilitator.split('点击输入').length - 1 == 5">暂无数据</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createDate" label="本站注册时间" align="center"></el-table-column>
+          <el-table-column prop="isAuthenticate" label="认证状态" align="center">
+            <template slot-scope="scope">
+              <div v-if="scope.row.isAuthenticate === 0">等待认证</div>
+              <div v-if="scope.row.isAuthenticate === 1">已认证</div>
+              <div v-if="scope.row.isAuthenticate === 2">认证失败</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scope">
+              <el-button type="primary" size="small" @click="toDetails(scope.row.id)">查看详情</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
-    <div class='pagination-container'>
+    <div class="pagination-container">
       <el-pagination
         background
-        @size-change='handleSizeChange'
-        @current-change='handleCurrentChange'
-        :current-page='dataAll.page'
-        :page-sizes='[10,20,30, 50]'
-        :page-size='dataAll.limit'
-        layout='total, sizes, prev, pager, next, jumper'
-        :total='dataAll.total'
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="upDataList.pageNum"
+        :page-sizes="[10,20,30, 50]"
+        :page-size="upDataList.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="dataAll.total"
       ></el-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import { getAllCompany } from "@/api/login";
 export default {
   data() {
     return {
       loading: false, // 是否有缓冲
       dataArr: [],
+      upDataList: {
+        name: null,
+        email: null,
+        firstIndustryId: null,
+        secondIndustryId: null,
+        isRecommend: null,
+        isAuthenticate: null,
+        beginDate: null,
+        endDate: null,
+        pageNum: 1,
+        pageSize: 10
+      },
       dataAll: {
-        page: 1,
-        limit: 10,
-        total: 100,
-        isUpper: '',
-        dataList: [
-          {
-            id: '100',
-            titel: 'xxx有限公司',
-            state: '未认证',
-            num: 23,
-            Customer: '阿里巴巴',
-            Supplier: '阿里巴巴',
-            industry: '金融，木材，保险',
-            imgurl:
-              'http://www.shiccs.net/pictures/index/topBanner2_20181126143140731.jpg',
-            logo:
-              'http://www.shiccs.net/pictures/index/topBanner2_20181126143140731.jpg',
-            upTime: '2018-08-08'
-          }
-        ]
+        total: 0,
+        list: []
       }
-    }
+    };
   },
   computed: {},
-  created() {},
+  created() {
+    this._getAllCompany();
+  },
   methods: {
+    _getAllCompany() {
+      getAllCompany(this.upDataList).then(res => {
+        if (res.code === 0) {
+          this.dataAll = res.data;
+        }
+      });
+    },
     toDetails(id) {
-      console.log(id)
+      console.log(id);
       this.$router.push({
         path: `/enterpriseDetails/${id}`
-      })
+      });
     },
     handleSizeChange(val) {
-      this.dataAll.limit = val
+      this.upDataList.pageSize = val;
+      this._getAllCompany();
     },
     handleCurrentChange(val) {
-      this.dataAll.page = val
+      this.upDataList.pageNum = val;
+      this._getAllCompany();
+    },
+    suchbox() {
+      this.upDataList.pageSize = 10;
+      this.upDataList.pageNum = 1;
+      if (this.dataArr !== []) {
+        this.upDataList.beginDate = this.dataArr[0];
+        this.upDataList.endDate = this.dataArr[1];
+      }
+      this._getAllCompany();
     }
   }
-}
+};
 </script>
 <style>
 img {

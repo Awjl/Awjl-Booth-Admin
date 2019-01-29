@@ -31,10 +31,10 @@
           </el-table-column>
           <el-table-column prop='upTime' label='上传时间' align='center'></el-table-column>
           <el-table-column label='操作' align='center'>
-            <template slot-scope='scope'>
+            <!-- <template slot-scope='scope'>
               <el-button type='danger' size='small'>删除</el-button>
               <el-button type='warning' size='small'>上架</el-button>
-            </template>
+            </template> -->
           </el-table-column>
         </el-table>
       </div>

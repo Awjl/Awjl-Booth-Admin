@@ -23,23 +23,22 @@ export const constantRouterMap = [
     path: '/websiteAdmin',
     component: Layout,
     redirect: '/websiteAdmin/home',
-    name: '网站管理',
+    name: '广告位管理',
     meta: {
-      title: '网站管理',
       icon: 'guide'
     },
     children: [
-      {
-        path: 'banner',
-        name: '活动管理',
-        component: () => import('@/views/websiteAdmin/banner'),
-        meta: { title: '活动管理', noCache: true }
-      },
+      // {
+      //   path: 'banner',
+      //   name: '活动管理',
+      //   component: () => import('@/views/websiteAdmin/banner'),
+      //   meta: { title: '活动管理', noCache: true }
+      // },
       {
         path: 'home',
         name: '广告位管理',
         component: () => import('@/views/websiteAdmin/home'),
-        meta: { title: '广告位管理', noCache: true }
+        meta: { title: '广告位管理', noCache: true, icon: 'guide' }
       }]
   },
   {

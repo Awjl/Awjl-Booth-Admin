@@ -176,7 +176,7 @@
       <el-form ref="dataForm" label-position="right" style="width: 100%;">
         <el-form-item label="全部会展">
           <template>
-            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+            <el-checkbox-group v-model="checkedCities">
               <el-checkbox
                 v-for="(item, index) in dataAll.list"
                 :label="item.id"
@@ -189,6 +189,7 @@
           <el-select
             style="width: 150px"
             class="filter-item"
+            placeholder="一级行业"
             v-model="upSearchList.firstIndustryId"
             @change="currentSel"
           >
@@ -212,16 +213,29 @@
               :key="index"
             >{{item.industryName}}</el-option>
           </el-select>
+          <el-input
+            style="width: 150px;"
+            class="filter-item"
+            placeholder="请输入地区"
+            v-model="upDataList.area"
+          ></el-input>
+          <el-button class="filter-item" type="primary" @click="_getAllCompanyByIndustryAndArea">搜索</el-button>
         </el-form-item>
-        <el-form-item label="添加图片">
-          <!-- <template>
-            <el-transfer v-model="value1" :data="data"></el-transfer>
-          </template>-->
+        <el-form-item label="公司列表">
+          <template>
+            <el-checkbox-group v-model="allList">
+              <el-checkbox
+                v-for="(item, index) in AllExhibitionList"
+                :label="item.id"
+                :key="index"
+              >{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </template>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
-        <!-- <el-button type="primary" @click="preservation">保存</el-button> -->
+        <el-button type="primary" @click="preservation">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -236,7 +250,9 @@ import {
   addExhibitior,
   getAllExhibitiors,
   deleteExhibitior,
-  getIndustry
+  getIndustry,
+  getAllCompanyByIndustryAndArea,
+  pushExhibitionInfo
 } from "@/api/login";
 
 export default {
@@ -247,7 +263,7 @@ export default {
       twoBox: false,
       loading: false, // 是否有缓冲
       showdialogForm: false,
-      showTwo: true,
+      showTwo: false,
       timer: "",
       center: "",
       serachList: [],
@@ -278,10 +294,12 @@ export default {
       leftList: [],
       rightList: [],
       upSearchList: {
-        firstIndustryId: 1,
+        firstIndustryId: "",
         secondIndustryId: "",
         area: ""
-      }
+      },
+      AllExhibitionList: [],
+      allList: []
     };
   },
 
@@ -291,6 +309,14 @@ export default {
     this._getAllExhibition();
   },
   methods: {
+    _getAllCompanyByIndustryAndArea() {
+      getAllCompanyByIndustryAndArea(this.upSearchList).then(res => {
+        if (res.code === 0) {
+          console.log(res);
+          this.AllExhibitionList = res.data;
+        }
+      });
+    },
     _getIndustry(id) {
       getIndustry(id).then(res => {
         this.dataList = res.data;
@@ -403,14 +429,9 @@ export default {
         this.upSearchList.firstIndustryId - 1
       ].secondIndustries;
     },
-    // currentSelTwo(vId) {
-    //   let obj = {};
-    //   obj = this.dataItem.find(item => {
-    //     return item.id === vId;
-    //   });
-    //   // this.upDataList.industryName = obj.industryName;
-    // },
-    pushMover() {},
+    pushMover() {
+      this.showTwo = true;
+    },
     showAddBox(id) {
       this.UpItem.exhibitionId = id;
       this.showdialogForm = true;
@@ -477,12 +498,16 @@ export default {
     cancel() {
       this.showdialogForm = false;
     },
-    handleCheckedCitiesChange(value) {
-      console.log(value);
-      // let checkedCount = value.length;
-      // this.checkAll = checkedCount === this.cities.length;
-      // this.isIndeterminate =
-      //   checkedCount > 0 && checkedCount < this.cities.length;
+    preservation() {
+      pushExhibitionInfo(this.allList, this.checkedCities).then(res => {
+        if (res.code === 0) {
+          this.showTwo = false;
+          this.$message({
+            type: "success",
+            message: "推送成功"
+          });
+        }
+      });
     }
   }
 };

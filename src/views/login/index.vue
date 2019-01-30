@@ -6,7 +6,7 @@
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.name" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -31,8 +31,8 @@ export default {
   data() {
     return {
       loginForm: {
-        name: 'admin',
-        password: 'admin'
+        username: '',
+        password: ''
       },
       loading: false,
       pwdType: 'password'

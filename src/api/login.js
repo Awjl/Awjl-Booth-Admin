@@ -2,10 +2,10 @@ import { api } from './config'
 import axios from 'axios'
 
 export function login(data) {
-  const url = `${api}/admin/login`
+  const url = `${api}/sys/login`
   console.log(url)
   return axios.post(url, {
-    name: data.name,
+    username: data.username,
     password: data.password
   }).then((res) => {
     return Promise.resolve(res.data)
@@ -20,7 +20,7 @@ export function getIndustry(Class) {
   }).then((res) => {
     return Promise.resolve(res.data)
   })
-} 
+}
 // 添加广告 1
 export function addAdvert(data) {
   return axios({
@@ -225,4 +225,111 @@ export function deleteExhibitior(id) {
   return axios.delete(url).then((res) => {
     return Promise.resolve(res.data)
   })
+}
+// 根据行业和地区获取所有企业 1
+export function getAllCompanyByIndustryAndArea(data) {
+  const url = `${api}/sys/getAllCompanyByIndustryAndArea`
+  return axios.get(url, {
+    params: {
+      firstIndustryId: data.firstIndustryId,
+      secondIndustryId: data.secondIndustryId,
+      area: data.area
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// /sys/pushExhibitionInfo 展会推送
+export function pushExhibitionInfo(companyIds, exhibitionIds) {
+  const url = `${api}/sys/pushExhibitionInfo`
+  return axios.post(url, {
+    companyIds: companyIds,
+    exhibitionIds: exhibitionIds
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// /sys/pushCompany
+// /sys/pushExhibitionInfo 展会推送
+export function pushCompany(companyAdvertIds, companyIds) {
+  const url = `${api}/sys/pushCompany`
+  return axios.post(url, {
+    companyAdvertIds: companyAdvertIds,
+    companyIds: companyIds
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// /sys/pushExhibitionInfo 展会推送
+export function recommendCompany(id, isRecommend) {
+  const url = `${api}/sys/recommendCompany`
+  return axios.get(url,
+    {
+      params: {
+        id: id,
+        isRecommend: isRecommend
+      }
+    }).then((res) => {
+      return Promise.resolve(res.data)
+    })
+}
+// 获取所有设计列表 /sys/getAllDemand
+export function getAllDemand(data) {
+  const url = `${api}/sys/getAllDemand`
+  return axios.get(url, {
+    params: {
+      name: data.name,
+      email: data.email,
+      isConnected: data.isConnected,
+      beginDate: data.beginDate,
+      endDate: data.endDate,
+      pageNum: data.pageNum,
+      pageSize: data.pageSize
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// /sys/isConnected 已联系
+export function isConnected(id) {
+  const url = `${api}/sys/isConnected`
+  return axios.get(url,
+    {
+      params: {
+        id: id
+      }
+    }).then((res) => {
+      return Promise.resolve(res.data)
+    })
+}
+// 查看所有报名 /sys/getAllEnroll
+export function getAllEnroll(data) {
+  const url = `${api}/sys/getAllEnroll`
+  return axios.get(url, {
+    params: {
+      companyName: data.companyName,
+      name: data.name,
+      mobile: data.mobile,
+      title: data.title,
+      beginDate: data.beginDate,
+      endDate: data.endDate,
+      pageNum: data.pageNum,
+      pageSize: data.pageSize
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 认证企业 /sys/authenticateCompany
+export function authenticateCompany(id, isAuthenticate) {
+  const url = `${api}/sys/authenticateCompany`
+  return axios.get(url,
+    {
+      params: {
+        id: id,
+        isAuthenticate: isAuthenticate
+      }
+    }).then((res) => {
+      return Promise.resolve(res.data)
+    })
 }

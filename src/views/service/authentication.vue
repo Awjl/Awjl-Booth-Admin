@@ -21,10 +21,10 @@
         <el-table-column prop="bookDate" label="申请时间"  align="center">
         </el-table-column>
         <el-table-column label="操作"  align="center" width="300">
-          <template slot-scope="scope">
+          <!-- <template slot-scope="scope">
             <el-button type="primary" size="small">未通过审核</el-button>
             <el-button type="success" size="small">通过审核</el-button>
-          </template>
+          </template> -->
         </el-table-column>
       </el-table>
     </div>

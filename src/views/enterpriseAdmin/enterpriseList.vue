@@ -27,6 +27,7 @@
         value-format="yyyy-MM-dd"
         format="yyyy-MM-dd"
       ></el-date-picker>
+      <el-button class="filter-item" type="primary" @click="pushMover">推送</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="suchbox">搜索</el-button>
     </div>
     <div class="dataAll-box">
@@ -70,9 +71,32 @@
               <div v-if="scope.row.isAuthenticate === 2">认证失败</div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width="350">
             <template slot-scope="scope">
-              <el-button type="primary" size="small" @click="toDetails(scope.row.id)">查看详情</el-button>
+              <el-button
+                type="success"
+                size="small"
+                @click="_authenticateCompany(scope.row.id, 1)"
+                v-if="scope.row.isAuthenticate === 0"
+              >通过认证</el-button>
+              <el-button
+                type="warning "
+                size="small"
+                @click="_authenticateCompany(scope.row.id, 2)"
+                v-if="scope.row.isAuthenticate === 0"
+              >认证失败</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="_recommendCompany(scope.row.id, 1)"
+                v-if="scope.row.isRecommend === 2"
+              >推荐至首页</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="_recommendCompany(scope.row.id, 2)"
+                v-else
+              >取消推荐</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,16 +114,93 @@
         :total="dataAll.total"
       ></el-pagination>
     </div>
+    <el-dialog :visible.sync="showTwo" title="推荐列表">
+      <el-form ref="dataForm" label-position="right" style="width: 100%;">
+        <el-form-item label="搜索公司">
+          <el-select
+            style="width: 150px"
+            class="filter-item"
+            placeholder="一级行业"
+            v-model="upSearchList.firstIndustryId"
+            @change="currentSel"
+          >
+            <el-option
+              :value="item.id"
+              :label="item.industryName"
+              v-for="(item, index) in dataList"
+              :key="index"
+            >{{item.industryName}}</el-option>
+          </el-select>
+          <el-select
+            style="width: 150px"
+            class="filter-item"
+            v-model="upSearchList.secondIndustryId"
+            placeholder="次级行业"
+          >
+            <el-option
+              :value="item.id"
+              :label="item.industryName"
+              v-for="(item, index) in dataItem"
+              :key="index"
+            >{{item.industryName}}</el-option>
+          </el-select>
+          <el-input
+            style="width: 150px;"
+            class="filter-item"
+            placeholder="请输入地区"
+            v-model="upDataList.area"
+          ></el-input>
+          <el-button class="filter-item" type="primary" @click="_getAllCompanyByIndustryAndArea">搜索</el-button>
+        </el-form-item>
+        <el-form-item label="被推送公司">
+          <template>
+            <el-checkbox-group v-model="checkedCities">
+              <el-checkbox
+                v-for="(item, index) in AllExhibitionList"
+                :label="item.id"
+                :key="index"
+              >{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </template>
+        </el-form-item>
+
+        <el-form-item label="推送目标">
+          <template>
+            <el-checkbox-group v-model="allList">
+              <el-checkbox
+                v-for="(item, index) in AllExhibitionList"
+                :label="item.id"
+                :key="index"
+              >{{item.name}}</el-checkbox>
+            </el-checkbox-group>
+          </template>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="preservation">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAllCompany } from "@/api/login";
+import {
+  getAllCompany,
+  getIndustry,
+  getAllCompanyByIndustryAndArea,
+  pushCompany,
+  recommendCompany,
+  authenticateCompany
+} from "@/api/login";
 export default {
   data() {
     return {
+      showTwo: false,
       loading: false, // 是否有缓冲
       dataArr: [],
+      dataList: [],
+      dataItem: [],
       upDataList: {
         name: null,
         email: null,
@@ -115,14 +216,52 @@ export default {
       dataAll: {
         total: 0,
         list: []
-      }
+      },
+      upSearchList: {
+        firstIndustryId: "",
+        secondIndustryId: "",
+        area: ""
+      },
+      AllExhibitionList: [],
+      allList: [],
+      checkedCities: []
     };
   },
   computed: {},
   created() {
+    this._getIndustry();
     this._getAllCompany();
   },
   methods: {
+    _authenticateCompany(id, type) {
+      authenticateCompany(id, type).then(res => {
+        if (res.code === 0) {
+          this._getAllCompany()
+        }
+      });
+    },
+    _recommendCompany(id, isRecommend) {
+      recommendCompany(id, isRecommend).then(res => {
+        if (res.code === 0) {
+          console.log(res);
+          this._getAllCompany()
+        }
+      });
+    },
+    _getAllCompanyByIndustryAndArea() {
+      getAllCompanyByIndustryAndArea(this.upSearchList).then(res => {
+        if (res.code === 0) {
+          console.log(res);
+          this.AllExhibitionList = res.data;
+        }
+      });
+    },
+    _getIndustry(id) {
+      getIndustry(id).then(res => {
+        this.dataList = res.data;
+        this.dataItem = this.dataList[0].secondIndustries;
+      });
+    },
     _getAllCompany() {
       getAllCompany(this.upDataList).then(res => {
         if (res.code === 0) {
@@ -130,11 +269,20 @@ export default {
         }
       });
     },
+    currentSel() {
+      this.upSearchList.secondIndustryId = "";
+      this.dataItem = this.dataList[
+        this.upSearchList.firstIndustryId - 1
+      ].secondIndustries;
+    },
     toDetails(id) {
       console.log(id);
       this.$router.push({
         path: `/enterpriseDetails/${id}`
       });
+    },
+    pushMover() {
+      this.showTwo = true;
     },
     handleSizeChange(val) {
       this.upDataList.pageSize = val;
@@ -152,6 +300,20 @@ export default {
         this.upDataList.endDate = this.dataArr[1];
       }
       this._getAllCompany();
+    },
+    cancel() {
+      this.showTwo = false;
+    },
+    preservation() {
+      pushCompany(this.checkedCities, this.allList).then(res => {
+        if (res.code === 0) {
+          this.showTwo = false;
+          this.$message({
+            type: "success",
+            message: "推送成功"
+          });
+        }
+      });
     }
   }
 };

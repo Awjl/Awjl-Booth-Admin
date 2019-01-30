@@ -90,24 +90,25 @@ export const constantRouterMap = [
       title: '服务管理',
       icon: 'email'
     },
-    children: [{
-      path: '/authentication',
-      component: () => import('@/views/service/authentication'),
-      name: 'service',
-      meta: { title: '企业认证列表' }
-    },
-    {
-      path: '/problem',
-      component: () => import('@/views/service/demand'),
-      name: 'problem',
-      meta: { title: '设计需求列表' }
-    },
-    {
-      path: '/signup',
-      component: () => import('@/views/service/signup'),
-      name: 'signup',
-      meta: { title: '会展报名列表' }
-    }]
+    children: [
+      // {
+      //   path: '/authentication',
+      //   component: () => import('@/views/service/authentication'),
+      //   name: 'service',
+      //   meta: { title: '企业认证列表' }
+      // },
+      {
+        path: '/problem',
+        component: () => import('@/views/service/demand'),
+        name: 'problem',
+        meta: { title: '设计需求列表' }
+      },
+      {
+        path: '/signup',
+        component: () => import('@/views/service/signup'),
+        name: 'signup',
+        meta: { title: '会展报名列表' }
+      }]
   },
   {
     path: '',

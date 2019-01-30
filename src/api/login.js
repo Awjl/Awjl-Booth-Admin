@@ -136,7 +136,7 @@ export function getAllExhibition(data) {
     return Promise.resolve(res.data)
   })
 }
-// /sys/isUpperExhibition 上架或下架会展 1
+// 上架或下架会展 1
 export function isUpperExhibition(id, isUpper) {
   const url = `${api}/sys/isUpperExhibition`
   return axios.get(url, {
@@ -178,6 +178,51 @@ export function getExhibitionById(id) {
       id: id
     }
   }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 删除展会 1
+export function deleteExhibition(id) {
+  const url = `${api}/sys/deleteExhibition/${id}`
+  return axios.delete(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 搜索工商 1
+export function searchCompany(content) {
+  const url = `${api}/search/searchCompany`
+  return axios.get(url, {
+    params: {
+      content: content
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 添加参展商或这到访商/sys/addExhibitior
+export function addExhibitior(data) {
+  const url = `${api}/sys/addExhibitior`
+  return axios.post(url, data).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// /sys/getAllExhibitiors 获取全部的参展商或者到访商
+export function getAllExhibitiors(exhibitionId, content, type) {
+  const url = `${api}/sys/getAllExhibitiors`
+  return axios.get(url, {
+    params: {
+      exhibitionId: exhibitionId,
+      content: content,
+      type: type
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 删除参展商 1
+export function deleteExhibitior(id) {
+  const url = `${api}/sys/deleteExhibitior/${id}`
+  return axios.delete(url).then((res) => {
     return Promise.resolve(res.data)
   })
 }

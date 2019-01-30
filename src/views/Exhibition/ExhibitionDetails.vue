@@ -41,54 +41,6 @@
             <span style="position: absolute;bottom:-30px;left:0px;color:red"></span>
           </el-form-item>
         </el-col>
-        <!-- <el-col :span="12">
-          <el-form-item label="会展时间">
-            <el-date-picker
-              v-model="TimeData"
-              :picker-options="pickerOptions"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              style="width:100%;"
-            ></el-date-picker>
-            <span style="position: absolute;bottom:-30px;left:0px;color:red"></span>
-          </el-form-item>
-        </el-col>-->
-        <el-col :span="12">
-          <el-form-item label="会展参展商">
-            <ul class="participateList">
-              <li>
-                <span>阿里巴巴</span>
-                <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-              </li>
-              <li>
-                <span>阿里巴巴阿里巴巴阿里巴巴阿里巴巴阿里巴巴</span>
-                <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-              </li>
-            </ul>
-            <div style>
-              <el-button type="primary" size="mini" icon="el-icon-plus">添加参展商</el-button>
-            </div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="会展到访商">
-            <ul class="participateList">
-              <li>
-                <span>阿里巴巴</span>
-                <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-              </li>
-              <li>
-                <span>阿里巴巴阿里巴巴阿里巴巴阿里巴巴阿里巴巴</span>
-                <el-button type="danger" size="mini" icon="el-icon-delete"></el-button>
-              </li>
-            </ul>
-            <div style>
-              <el-button type="primary" size="mini" icon="el-icon-plus">添加到访商</el-button>
-            </div>
-          </el-form-item>
-        </el-col>
         <el-col :span="9">
           <el-form-item label="会展主题">
             <el-input placeholder="请输入主题" v-model="upDataList.title"></el-input>
@@ -258,26 +210,26 @@ export default {
     },
     _editExhibition() {
       editExhibition(this.upData).then(res => {
-        if (res.code === 0) {
+        if (res.data.code === 0) {
           this.$message({
             type: "success",
             message: "修改成功"
           });
           this.$router.push({
-            path: `/Exhibition/ExhibitionList`
+            path: "/Exhibition/ExhibitionList"
           });
         }
       });
     },
     _addExhibition() {
       addExhibition(this.upData).then(res => {
-        if (res.code === 0) {
+        if (res.data.code === 0) {
           this.$message({
             type: "success",
             message: "添加成功"
           });
           this.$router.push({
-            path: `/Exhibition/ExhibitionList`
+            path: "/Exhibition/ExhibitionList"
           });
         }
       });

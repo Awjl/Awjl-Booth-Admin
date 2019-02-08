@@ -333,3 +333,140 @@ export function authenticateCompany(id, isAuthenticate) {
       return Promise.resolve(res.data)
     })
 }
+// 获取系统日志
+export function getAllLog(data) {
+  const url = `${api}/sys/getAllLog`
+  return axios.get(url, {
+    params: {
+      name: data.name,
+      beginDate: data.beginDate,
+      endDate: data.endDate,
+      pageNum: data.pageNum,
+      pageSize: data.pageSize
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 删除系统日志
+export function deleteLog(date) {
+  const url = `${api}/sys/deleteLog`
+  return axios.get(url, {
+    params: {
+      date: date
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 查询全部角色
+export function getRoles() {
+  const url = `${api}/sys/getRoles`
+  return axios.get(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 新增角色/role/addRole
+export function addRole(data) {
+  const url = `${api}/sys/addRole`
+  return axios.post(url, {
+    name: data.name,
+    bannerData: data.bannerData,
+    enterpriseData: data.enterpriseData,
+    exhibitionData: data.exhibitionData,
+    serviceData: data.serviceData,
+    adminData: data.adminData,
+    systemData: data.systemData,
+    note: data.note,
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 查询角色信息
+export function getRoleById(id) {
+  const url = `${api}/sys/getRoleById`
+  return axios.get(url, {
+    params: {
+      id: id
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+// 删除角色信息
+export function deleteRole(id) {
+  const url = `${api}/sys/deleteRole/${id}`
+  return axios.delete(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 修改角色信息
+export function editRole(data) {
+  const url = `${api}/sys/editRole`
+  return axios.post(url, {
+    name: data.name,
+    bannerData: data.bannerData,
+    enterpriseData: data.enterpriseData,
+    exhibitionData: data.exhibitionData,
+    serviceData: data.serviceData,
+    adminData: data.adminData,
+    systemData: data.systemData,
+    note: data.note,
+    id: data.id
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+// 查询全部管理员
+export function getAllAdmin() {
+  const url = `${api}/sys/getAllAdmin`
+  return axios.get(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+// 新增管理员
+export function addAdmin(data) {
+  console.log(data)
+  const url = `${api}/sys/addAdmin`
+  return axios.post(url, {
+    nickname: data.nickname,
+    password: data.password,
+    roleId: data.roleId,
+    username: data.username
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+// 查询管理员
+export function getAdminById(id) {
+  const url = `${api}/sys/getAdminById`
+  return axios.get(url, {
+    params: {
+      id: id
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 修改管理员
+export function editAdmin(data) {
+  const url = `${api}/sys/editAdmin`
+  return axios.post(url, {
+    id: data.id,
+    roleId: data.roleId,
+    nickname: data.nickname
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 删除管理员
+export function deleteAdminById(id) {
+  const url = `${api}/sys/deleteAdminById/${id}`
+  return axios.delete(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

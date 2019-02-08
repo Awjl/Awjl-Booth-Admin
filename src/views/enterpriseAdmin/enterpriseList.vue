@@ -50,7 +50,7 @@
                 :key="index"
                 v-show="item.key != `点击输入`"
               >{{item.key}}</div>
-              <div v-if="scope.row.customer.split('点击输入').length - 1 == 5">暂无数据</div>
+              <!-- <div v-if="scope.row.customer.split('点击输入').length - 1 == 5">暂无数据</div> -->
             </template>
           </el-table-column>
           <el-table-column prop="facilitator" label="主要供应商" align="center">
@@ -60,7 +60,7 @@
                 :key="index"
                 v-show="item.key != `点击输入`"
               >{{item.key}}</div>
-              <div v-if="scope.row.facilitator.split('点击输入').length - 1 == 5">暂无数据</div>
+              <!-- <div v-if="scope.row.facilitator.split('点击输入').length - 1 == 5">暂无数据</div> -->
             </template>
           </el-table-column>
           <el-table-column prop="createDate" label="本站注册时间" align="center"></el-table-column>

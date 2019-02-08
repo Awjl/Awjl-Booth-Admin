@@ -1,35 +1,57 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input style="width: 150px;" class="filter-item" placeholder="请输入管理员名称" v-model="data.adminName">
-      </el-input>
-      <el-date-picker v-model="dataArr" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-      </el-date-picker>
+      <el-input
+        style="width: 150px;"
+        class="filter-item"
+        placeholder="请输入管理员名称"
+        v-model="upDataList.name"
+      ></el-input>
+      <el-date-picker
+        v-model="dataArr"
+        type="daterange"
+        range-separator="-"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        value-format="yyyy-MM-dd"
+        format="yyyy-MM-dd"
+      ></el-date-picker>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="suchbox">搜索</el-button>
       <el-button @click="del" type="danger">删除</el-button>
       <div class="he20"></div>
-      <el-table :data="tableData" border style="width: 100%" v-loading="loading">
-        <el-table-column prop="id" label="ID" width="250" align="center">
-        </el-table-column>
-        <el-table-column prop="adminName" label="管理员" width="250" align="center">
-        </el-table-column>
+      <el-table :data="dataAll.list" border style="width: 100%" v-loading="loading">
+        <el-table-column prop="id" label="ID" width="250" align="center"></el-table-column>
+        <el-table-column prop="name" label="管理员" width="250" align="center"></el-table-column>
         <el-table-column prop="createDate" label="操作时间" width="250" align="center">
           <template slot-scope="scope">
-          </template> 
+            {{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}
+          </template>
         </el-table-column>
-        <el-table-column prop="msg" label="操作内容" align="center">
-        </el-table-column>
+        <el-table-column prop="msg" label="操作内容" align="center"></el-table-column>
       </el-table>
     </div>
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="upDataList.pageNum"
+        :page-sizes="[10,20,30, 50]"
+        :page-size="upDataList.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="dataAll.total"
+      ></el-pagination>
     </div>
     <el-dialog :visible.sync="dialogFormVisible" title="删除系统日至">
-      <el-form ref="dataForm" label-position="right" label-width="20%" style='width: 80%px;'>
+      <el-form ref="dataForm" label-position="right" label-width="20%" style="width: 80%px;">
         <el-form-item label="删除时间点">
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期" value-format="yyyy-MM-dd" format="yyyy-MM-dd">
-          </el-date-picker>
+          <el-date-picker
+            v-model="value1"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            format="yyyy-MM-dd"
+          ></el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -40,77 +62,84 @@
   </div>
 </template>
 <script>
+import { getAllLog, deleteLog } from "@/api/login";
 
 export default {
   data() {
     return {
       loading: false,
-      total: 1,
       dialogFormVisible: false,
-      listQuery: {
-        page: 1,
-        limit: 10
+      dataAll: {
+        total: 0,
+        list: []
       },
-      tableData: [],
-      data: {
-        adminName: null,
-        startTime: null,
-        endTime: null,
-        pageNum: null,
-        pageSize: null
+      upDataList: {
+        name: null,
+        beginDate: null,
+        endDate: null,
+        pageNum: 1,
+        pageSize: 10
       },
       dataArr: [],
-      value1: ''
-    }
+      value1: ""
+    };
   },
   created() {
+    this._getAllLog();
   },
   methods: {
+    _getAllLog() {
+      getAllLog(this.upDataList).then(res => {
+        if (res.code === 0) {
+          this.dataAll = res.data;
+        }
+      });
+    },
     del() {
-      this.dialogFormVisible = true
+      this.dialogFormVisible = true;
     },
     quxiao() {
-      this.dialogFormVisible = false
+      this.dialogFormVisible = false;
     },
     trueover() {
-      // console.log(this.value1)
-      // this.$confirm(`是否删${this.value1}之前所有的系统日至?`, '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   deleteLog(this.value1).then((res) => {
-      //     if (res.code === ERR_OK) {
-      //       this.$message({
-      //         message: '删除成功',
-      //         type: 'success'
-      //       })
-      //       this.dialogFormVisible = false
-      //       this._gerAllLog()
-      //     }
-      //   })
-      // })
+      console.log(this.value1)
+      this.$confirm(`是否删${this.value1}之前所有的系统日至?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteLog(this.value1).then((res) => {
+          if (res.code === 0) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            })
+            this.dialogFormVisible = false
+            this._gerAllLog()
+          }
+        })
+      })
     },
     handleSizeChange(val) {
-      this.listQuery.limit = val
+      this.listQuery.limit = val;
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val
+      this.listQuery.page = val;
     },
     suchbox() {
-      this.listQuery.limit = 10
-      this.listQuery.page = 1
+      this.listQuery.limit = 10;
+      this.listQuery.page = 1;
       if (this.dataArr !== [] && this.dataArr !== null) {
-        this.data.startTime = this.dataArr[0]
-        this.data.endTime = this.dataArr[1]
+        this.data.startTime = this.dataArr[0];
+        this.data.endTime = this.dataArr[1];
       } else {
-        this.data.startTime = null
-        this.data.endTime = null
+        this.data.startTime = null;
+        this.data.endTime = null;
       }
-      this._gerAllLog()
+      this._gerAllLog();
     }
   }
-}
+};
 </script>
 <style>
 .he20 {

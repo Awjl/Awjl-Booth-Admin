@@ -52,10 +52,10 @@
           <el-table-column prop="upTime" label="上传时间" align="center">
             <!-- createDate -->
             <template slot-scope="scope">
-              <div>{{scope.row.createDate}}</div>
+               <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width="250">
             <template slot-scope="scope">
               <el-button type="primary" size="small" @click="edit(scope.row.id)">修改</el-button>
               <el-button

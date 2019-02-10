@@ -11,12 +11,13 @@
       <div class="he20"></div>
       <el-table :data="tableData" border style="width: 100%" v-loading="loading">
         <el-table-column prop="id" label="管理员ID" align="center"></el-table-column>
-        <el-table-column prop="roleName" label="管理员级别" align="center"></el-table-column>
-        <el-table-column prop="username" label="账号" align="center"></el-table-column>
-        <el-table-column prop="date" label="创建时间" align="center">
-          <!-- <template slot-scope="scope">
-          </template>-->
-        </el-table-column>
+        <!-- <el-table-column prop="roleName" label="管理员级别" align="center"></el-table-column> -->
+        <el-table-column prop="nickname" label="账号" align="center"></el-table-column>
+        <!-- <el-table-column prop="date" label="创建时间" align="center">
+          <template slot-scope="scope">
+            <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
+          </template>
+        </el-table-column> -->
         <el-table-column prop="lve" label="操作" align="center">
           <template slot-scope="scope">
             <p v-if="scope.row.id != 1">
@@ -46,7 +47,6 @@
         <el-form-item label="管理权限">
           <span style="position: absolute;bottom:-30px;left:0px;color:red">{{roleIdERR}}</span>
           <el-select
-            clearable
             style="width: 150px"
             class="filter-item"
             v-model="user.roleId"
@@ -80,7 +80,7 @@ import {
 
 export default {
   data() {
-    return {  
+    return {
       loading: false,
       dialogFormVisible: false,
       tableData: [],
@@ -92,7 +92,7 @@ export default {
         password: "",
         roleId: "",
         id: "",
-        nickname: "",
+        nickname: ""
       },
       nameERR: "",
       passwordERR: "",
@@ -107,17 +107,17 @@ export default {
   methods: {
     _getAdmins() {
       getAllAdmin().then(res => {
-        if (res.code === ERR_OK) {
+        if (res.code === 0) {
           console.log("获取全部管理员============================");
           console.log(res.data);
-          this.tableData = res.data.list;
+          this.tableData = res.data;
         }
       });
     },
     _getRoles() {
       getRoles().then(res => {
-        if (res.code === ERR_OK) {
-          this.barList = res.data.list;
+        if (res.code === 0) {
+          this.barList = res.data;
         }
       });
     },
@@ -129,7 +129,7 @@ export default {
       })
         .then(() => {
           deleteAdminById(id).then(res => {
-            if (res.code === ERR_OK) {
+            if (res.code === 0) {
               this.$message({
                 message: "删除成功",
                 type: "success"
@@ -182,9 +182,8 @@ export default {
         this.roleIdERR = "请选择管理员权限";
         return;
       }
-      console.log("123");
       if (this.title === "新增管理员") {
-        if (!this.user.name) {
+        if (!this.user.username) {
           this.nameERR = "请输入管理员账号";
           return;
         }
@@ -193,7 +192,7 @@ export default {
           return;
         }
         addAdmin(this.user).then(res => {
-          if (res.code === ERR_OK) {
+          if (res.code === 0) {
             this.$message({
               message: "新增成功",
               type: "success"
@@ -205,7 +204,7 @@ export default {
       } else {
         console.log(this.user);
         editAdmin(this.user).then(res => {
-          if (res.code === ERR_OK) {
+          if (res.code === 0) {
             this.$message({
               message: "修改成功",
               type: "success"

@@ -51,7 +51,7 @@
               <el-button type="primary" size="small" @click="showAddBox(scope.row.id)">查看</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center">
+          <el-table-column label="操作" align="center" width="250">
             <template slot-scope="scope">
               <el-button type="primary" size="small" @click="toExhibition(scope.row.id)">修改</el-button>
               <el-button

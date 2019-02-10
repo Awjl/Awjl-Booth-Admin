@@ -63,7 +63,11 @@
               <!-- <div v-if="scope.row.facilitator.split('点击输入').length - 1 == 5">暂无数据</div> -->
             </template>
           </el-table-column>
-          <el-table-column prop="createDate" label="本站注册时间" align="center"></el-table-column>
+          <el-table-column prop="createDate" label="本站注册时间" align="center">
+            <template slot-scope="scope">
+               <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
+            </template>
+          </el-table-column>
           <el-table-column prop="isAuthenticate" label="认证状态" align="center">
             <template slot-scope="scope">
               <div v-if="scope.row.isAuthenticate === 0">等待认证</div>

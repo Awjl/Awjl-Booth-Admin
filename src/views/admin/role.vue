@@ -13,9 +13,9 @@
         <el-table-column prop="id" label="ID" align="center"></el-table-column>
         <el-table-column prop="name" label="权限名称" align="center"></el-table-column>
         <el-table-column label="创建时间" align="center">
-          <!-- <template slot-scope="scope">
-           
-          </template>-->
+          <template slot-scope="scope">
+            <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
+          </template>
         </el-table-column>
         <el-table-column prop="note" label="备注" align="center">
           <template slot-scope="scope">
@@ -109,7 +109,7 @@
   </div>
 </template>
 <script>
-import { getRoles, addRole, getRoleById, editRole } from "@/api/login";
+import { getRoles, addRole, getRoleById, editRole ,deleteRole} from "@/api/login";
 
 export default {
   data() {
@@ -170,7 +170,7 @@ export default {
       getRoles().then(res => {
         if (res.code === 0) {
           console.log(res.data);
-          this.tableData = res.data.list;
+          this.tableData = res.data;
         }
       });
     },
@@ -190,7 +190,7 @@ export default {
     },
     _getRoleById(id) {
       getRoleById(id).then(res => {
-        if (res.code === ERR_OK) {
+        if (res.code === 0) {
           console.log("获取成功");
           console.log(res.data);
           var vm = this;
@@ -215,6 +215,13 @@ export default {
               .split(",")
               .forEach(function(value, index, array) {
                 vm.dataAll.exhibitionData.push(Number(value));
+              });
+          }
+          if (res.data.serviceData !== "") {
+            res.data.serviceData
+              .split(",")
+              .forEach(function(value, index, array) {
+                vm.dataAll.serviceData.push(Number(value));
               });
           }
           if (res.data.adminData !== "") {
@@ -307,24 +314,17 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
-          deleteRole(id).then(res => {
-            if (res.code === ERR_OK) {
-              this.$message({
-                message: "删除成功",
-                type: "success"
-              });
-              this._getRoles();
-            }
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+      }).then(() => {
+        deleteRole(id).then(res => {
+          if (res.code === 0) {
+            this.$message({
+              message: "删除成功",
+              type: "success"
+            });
+            this._getRoles();
+          }
         });
+      });
     }
   }
 };

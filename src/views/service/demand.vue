@@ -19,7 +19,11 @@
         <!-- <el-table-column prop="mobile" label="企业电话" align="center"></el-table-column> -->
         <el-table-column prop="email" label="企业邮箱" align="center"></el-table-column>
         <el-table-column prop="industryName" label="行业" align="center"></el-table-column>
-        <el-table-column prop="createTime" label="申请时间" align="center"></el-table-column>
+        <el-table-column prop="createTime" label="申请时间" align="center">
+          <template slot-scope="scope">
+               <p>{{`${new Date(scope.row.createTime).getFullYear()}/${ 10 > (new Date(scope.row.createTime).getMonth() + 1) ? '0' + (new Date(scope.row.createTime).getMonth()+ 1) : new Date(scope.row.createTime).getMonth()}/${ 10 > new Date(scope.row.createTime).getDate() ? '0' + new Date(scope.row.createTime).getDate() : new Date(scope.row.createTime).getDate()}`}}</p>
+            </template>
+        </el-table-column>
         <el-table-column label="操作" align="center" width="300">
           <template slot-scope="scope">
             <el-button

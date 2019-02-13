@@ -121,10 +121,12 @@ export default {
       })
     },
     handleSizeChange(val) {
-      this.listQuery.limit = val;
+      this.upDataList.pageSize = val;
+      this._getAllLog();
     },
     handleCurrentChange(val) {
-      this.listQuery.page = val;
+      this.upDataList.pageNum = val;
+      this._getAllLog();
     },
     suchbox() {
       this.listQuery.limit = 10;

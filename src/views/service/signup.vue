@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input style="width: 200px;" class="filter-item" placeholder="请输入企业名称" v-model="upDataList.companyName"></el-input>
+      <el-input
+        style="width: 200px;"
+        class="filter-item"
+        placeholder="请输入企业名称"
+        v-model="upDataList.companyName"
+      ></el-input>
       <el-date-picker
         v-model="dataArr"
         type="daterange"
@@ -19,6 +24,17 @@
         <el-table-column prop="industryName" label="所属行业" align="center"></el-table-column>
         <el-table-column prop="date" label="会展时间" align="center"></el-table-column>
         <el-table-column prop="companyName" label="报名企业" align="center"></el-table-column>
+        <el-table-column prop="name" label="联系人" align="center"></el-table-column>
+        <el-table-column prop="position" label="职位" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.position == 1">市场及销售</span>
+            <span v-if="scope.row.position == 2">采购</span>
+            <span v-if="scope.row.position == 3">管理</span>
+            <span v-if="scope.row.position == 4">技术</span>
+            <span v-if="scope.row.position == 5">生产及运营</span>
+            <span v-if="scope.row.position == 6">其他</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="precentDate" label="参加时间" align="center"></el-table-column>
         <el-table-column prop="createDate" label="申请时间" align="center"></el-table-column>
         <!-- <el-table-column label="操作" align="center" width="300">
@@ -26,7 +42,7 @@
             <el-button type="primary" size="small">未通过报名</el-button>
             <el-button type="success" size="small">通过报名</el-button>
           </template>
-        </el-table-column> -->
+        </el-table-column>-->
       </el-table>
     </div>
     <div class="pagination-container">

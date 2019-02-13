@@ -65,7 +65,7 @@
           </el-table-column>
           <el-table-column prop="createDate" label="本站注册时间" align="center">
             <template slot-scope="scope">
-               <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
+              <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
             </template>
           </el-table-column>
           <el-table-column prop="isAuthenticate" label="认证状态" align="center">
@@ -156,29 +156,26 @@
           ></el-input>
           <el-button class="filter-item" type="primary" @click="_getAllCompanyByIndustryAndArea">搜索</el-button>
         </el-form-item>
-        <el-form-item label="被推送公司">
-          <template>
-            <el-checkbox-group v-model="checkedCities">
-              <el-checkbox
-                v-for="(item, index) in AllExhibitionList"
-                :label="item.id"
-                :key="index"
-              >{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </template>
-        </el-form-item>
-
-        <el-form-item label="推送目标">
-          <template>
-            <el-checkbox-group v-model="allList">
-              <el-checkbox
-                v-for="(item, index) in AllExhibitionList"
-                :label="item.id"
-                :key="index"
-              >{{item.name}}</el-checkbox>
-            </el-checkbox-group>
-          </template>
-        </el-form-item>
+        <p style="font-weight: bold;text-align: center;">被推送公司</p>
+        <div>
+          <el-checkbox-group v-model="checkedCities">
+            <el-checkbox
+              v-for="(item, index) in AllExhibitionList"
+              :label="item.id"
+              :key="index"
+            >{{item.name}}</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <p style="font-weight: bold;text-align: center;">推送目标</p>
+        <div>
+          <el-checkbox-group v-model="allList">
+            <el-checkbox
+              v-for="(item, index) in AllExhibitionList"
+              :label="item.id"
+              :key="index"
+            >{{item.name}}</el-checkbox>
+          </el-checkbox-group>
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
@@ -240,7 +237,7 @@ export default {
     _authenticateCompany(id, type) {
       authenticateCompany(id, type).then(res => {
         if (res.code === 0) {
-          this._getAllCompany()
+          this._getAllCompany();
         }
       });
     },
@@ -248,7 +245,7 @@ export default {
       recommendCompany(id, isRecommend).then(res => {
         if (res.code === 0) {
           console.log(res);
-          this._getAllCompany()
+          this._getAllCompany();
         }
       });
     },
@@ -337,6 +334,7 @@ img {
 .dataAll-box {
   margin: 30px;
   min-height: 600px;
+
   border: 1px solid #ddd;
 }
 .upbtn {

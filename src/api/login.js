@@ -396,7 +396,7 @@ export function getRoleById(id) {
 
 // 删除角色信息
 export function deleteRole(id) {
-  const url = `${api}/sys/deleteRole/${id}`
+  const url = `${api}/sys/deleteRoleById/${id}`
   return axios.delete(url).then((res) => {
     return Promise.resolve(res.data)
   })
@@ -467,6 +467,13 @@ export function editAdmin(data) {
 export function deleteAdminById(id) {
   const url = `${api}/sys/deleteAdminById/${id}`
   return axios.delete(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 获取首页内容   /sys/indexInfo
+export function indexInfo() {
+  const url = `${api}/sys/indexInfo`
+  return axios.get(url).then((res) => {
     return Promise.resolve(res.data)
   })
 }

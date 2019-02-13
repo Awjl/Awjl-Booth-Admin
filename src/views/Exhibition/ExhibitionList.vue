@@ -44,7 +44,7 @@
           </el-table-column>
           <el-table-column prop="location" label="会展地址" align="center"></el-table-column>
           <el-table-column prop="title" label="主题" align="center"></el-table-column>
-          <el-table-column prop="summary" label="简介" align="center"></el-table-column>
+          <!-- <el-table-column prop="summary" label="简介" align="center"></el-table-column> -->
           <el-table-column prop="date" label="会展时间" align="center"></el-table-column>
           <el-table-column prop="date" label="查看" align="center">
             <template slot-scope="scope">
@@ -167,10 +167,10 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
-        <!-- <el-button type="primary" @click="preservation">保存</el-button> -->
-      </div>
+        <el-button type="primary" @click="preservation">保存</el-button>
+      </div>-->
     </el-dialog>
     <el-dialog :visible.sync="showTwo" title="推荐列表">
       <el-form ref="dataForm" label-position="right" style="width: 100%;">
@@ -324,6 +324,12 @@ export default {
       });
     },
     _addExhibitior() {
+      if (!this.UpItem.name) {
+        return this.$message({
+          type: "info",
+          message: "请输入公司名称"
+        });
+      }
       addExhibitior(this.UpItem).then(res => {
         if (res.code === 0) {
           this.center = "";

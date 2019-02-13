@@ -52,7 +52,7 @@
           <el-table-column prop="upTime" label="上传时间" align="center">
             <!-- createDate -->
             <template slot-scope="scope">
-               <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
+              <p>{{`${new Date(scope.row.createDate).getFullYear()}/${ 10 > (new Date(scope.row.createDate).getMonth() + 1) ? '0' + (new Date(scope.row.createDate).getMonth()+ 1) : new Date(scope.row.createDate).getMonth()}/${ 10 > new Date(scope.row.createDate).getDate() ? '0' + new Date(scope.row.createDate).getDate() : new Date(scope.row.createDate).getDate()}`}}</p>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="250">
@@ -212,6 +212,7 @@ export default {
   computed: {},
   created() {
     this._getIndustry();
+    this._getAllAdvert();
   },
   methods: {
     _isUpperAdvert(id, isupper) {
@@ -237,13 +238,13 @@ export default {
         if (res.code === ERR_OK) {
           // this.newBanner
           console.log(res);
-
           this.newBanner.title = res.data.title;
           this.newBanner.oneIndustry = res.data.oneIndustryid;
+          console.log(this.newBanner);
           this.dataItem = this.dataList[
             this.newBanner.oneIndustry - 1
           ].secondIndustries;
-          this.newBanner.twoIndustry = res.data.twoIndustry;
+          this.newBanner.twoIndustry = res.data.twoIndustryid;
           this.newBanner.imagesUrl = res.data.url;
           this.newBanner.industryName = res.data.industryName;
           this.newBanner.isUpper = res.data.isUpper;
@@ -283,7 +284,6 @@ export default {
       getIndustry().then(res => {
         this.dataList = res.data;
         this.dataItem = this.dataList[0].secondIndustries;
-        this._getAllAdvert();
       });
     },
     _getAllAdvert() {

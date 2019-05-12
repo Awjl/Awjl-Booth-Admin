@@ -477,3 +477,126 @@ export function indexInfo() {
     return Promise.resolve(res.data)
   })
 }
+
+// 获取行业列表
+export function getIndustryByCondition(data) {
+  const url = `${api}/back/getIndustryByCondition`
+  return axios.get(url, {
+    params: {
+      state: data.state,
+      name: data.name,
+      pageNum: data.pageNum,
+      pageSize: data.pageSize
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 新增行业名称
+export function addIndustry(data) {
+  const url = `${api}/back/addIndustry`
+  return axios.post(url, data).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 查询一级行业
+export function getIndustryDetail(id) {
+  const url = `${api}/back/getIndustryDetail`
+  return axios.get(url, {
+    params: {
+      id: id
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 修改一级行业
+export function editIndustry(data) {
+  const url = `${api}/back/editIndustry`
+  return axios.post(url, data).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 删除行业
+export function deleteIndustry(id) {
+  const url = `${api}/back/deleteIndustry/${id}`
+  return axios.delete(url).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 根据一级行业获取二级行业列表
+export function getTwoLevelIndustry(id) {
+  const url = `${api}/back/getTwoLevelIndustry`
+  return axios.get(url, {
+    params: {
+      id: id
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
+
+
+
+
+// 获取行业列表
+
+// 获取用户信息 
+export function getCompanyInfo(userId, id) {
+  const url = `${api}/user/getCompanyInfo`
+  return axios.get(url, {
+    params: {
+      userId: userId,
+      id: id
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 新增企业
+export function addNewCompany(data) {
+  return axios({
+    url: `${api}/sys/addNewCompany`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+// 修改用户信息 
+export function addUserInfo(data) {
+  return axios({
+    url: `${api}/user/addUserInfo`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 冻结企业
+export function freezeCompany(data) {
+  console.log(data)
+  return axios({
+    url: `${api}/sys/freezeCompany`,
+    method: 'post',
+    data: data
+  })
+}
+// 导出报名列表
+export function exportEnrollExcel(data) {
+  const url = `${api}/sys/exportEnrollExcel`
+  return axios.post(url, {
+    companyName: data.companyName,
+    name: data.name,
+    mobile: data.mobile,
+    title: data.title,
+    beginDate: data.beginDate,
+    endDate: data.endDate,
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}

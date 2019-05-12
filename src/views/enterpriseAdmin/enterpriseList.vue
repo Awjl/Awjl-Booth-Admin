@@ -29,6 +29,12 @@
       ></el-date-picker>
       <el-button class="filter-item" type="primary" @click="pushMover">推送</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="suchbox">搜索</el-button>
+      <el-button
+        class="filter-item"
+        type="primary"
+        icon="el-icon-plus"
+        @click="toDetails(null)"
+      >添加企业</el-button>
     </div>
     <div class="dataAll-box">
       <div class="filter-container">
@@ -90,17 +96,24 @@
                 v-if="scope.row.isAuthenticate === 0"
               >认证失败</el-button>
               <el-button
-                type="primary"
                 size="small"
                 @click="_recommendCompany(scope.row.id, 1)"
                 v-if="scope.row.isRecommend === 2"
               >推荐至首页</el-button>
+              <el-button size="small" @click="_recommendCompany(scope.row.id, 2)" v-else>取消推荐</el-button>
+              <el-button type="primary" size="small" @click="toDetails(scope.row.id)">修改企业</el-button>
               <el-button
-                type="primary"
+                type="danger"
                 size="small"
-                @click="_recommendCompany(scope.row.id, 2)"
-                v-else
-              >取消推荐</el-button>
+                v-if="scope.row.isActivate === 1"
+                @click="_setfreeze(scope.row.id, 2)"
+              >冻结</el-button>
+              <el-button
+                type="success"
+                size="small"
+                v-if="scope.row.isActivate !== 1"
+                @click="_setfreeze(scope.row.id, 1)"
+              >解冻</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -192,7 +205,8 @@ import {
   getAllCompanyByIndustryAndArea,
   pushCompany,
   recommendCompany,
-  authenticateCompany
+  authenticateCompany,
+  freezeCompany
 } from "@/api/login";
 export default {
   data() {
@@ -234,6 +248,22 @@ export default {
     this._getAllCompany();
   },
   methods: {
+    _setfreeze(idtitle, type) {
+      let parmes = {
+        id: idtitle,
+        type: type
+      };
+      console.log(parmes)
+      freezeCompany(parmes).then(res => {
+        if (res.code === 0) {
+          this.$message({
+            type: "success",
+            message: "企业状态修改成功"
+          });
+          this._getAllCompany();
+        }
+      });
+    },
     _authenticateCompany(id, type) {
       authenticateCompany(id, type).then(res => {
         if (res.code === 0) {

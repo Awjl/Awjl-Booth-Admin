@@ -42,6 +42,28 @@ export const constantRouterMap = [
       }]
   },
   {
+    path: '/industry',
+    component: Layout,
+    redirect: '/industry/industry',
+    name: '行业管理',
+    meta: {
+      icon: 'guide'
+    },
+    children: [
+      // {
+      //   path: 'banner',
+      //   name: '活动管理',
+      //   component: () => import('@/views/websiteAdmin/banner'),
+      //   meta: { title: '活动管理', noCache: true }
+      // },
+      {
+        path: 'home',
+        name: '行业管理',
+        component: () => import('@/views/industry/industry'),
+        meta: { title: '行业管理', noCache: true, icon: 'guide' }
+      }]
+  },
+  {
     path: '/enterpriseAdmin',
     component: Layout,
     redirect: 'Member',

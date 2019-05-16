@@ -16,6 +16,7 @@
         value-format="yyyy-MM-dd"
         format="yyyy-MM-dd"
       ></el-date-picker>
+      <el-button class="filter-item" type="primary" @click="daochu">导出</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="suchbox">搜索</el-button>
       <div class="he20"></div>
       <el-table :data="dataAll.list" border style="width: 100%" v-loading="loading">
@@ -60,7 +61,7 @@
   </div>
 </template>
 <script>
-import { getAllEnroll } from "@/api/login";
+import { getAllEnroll, exportEnrollExcel } from "@/api/login";
 
 // getAllEnroll
 export default {
@@ -103,6 +104,23 @@ export default {
     handleCurrentChange(val) {
       this.upDataList.pageNum = val;
       this._getAllEnroll();
+    },
+    daochu() {
+      let data = {
+        companyName: this.upDataList.companyName,
+        name: this.upDataList.name,
+        mobile: this.upDataList.mobile,
+        title: this.upDataList.title,
+        beginDate: this.upDataList.beginDate,
+        endDate: this.upDataList.endDate
+      };
+      exportEnrollExcel(data).then(res => {
+        if (res.code === ERR_OK) {
+          console.log(res.data);
+          console.log("成功");
+          window.location.href = `http://www.booth.vip/${res.data}`;
+        }
+      });
     },
     suchbox() {
       this.upDataList.pageSize = 10;

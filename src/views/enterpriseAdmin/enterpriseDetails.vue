@@ -111,52 +111,56 @@
         <el-col :span="6">
           <el-form-item label="行业关键词">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add1"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(1)"></el-button>
             </div>
             <div
               class="datatext"
               v-for="(item, index) in dataAll.keywords"
               :key="index"
+              v-show="item.key!='点击输入'"
             >{{item.key}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="竞争对手">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add2"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(2)"></el-button>
             </div>
             <div
               class="datatext"
               v-for="(item, index) in dataAll.competitor"
               :key="index"
+              v-show="item.key!='点击输入'"
             >{{item.key}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="主要供应商">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add3"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(3)"></el-button>
             </div>
             <div
               class="datatext"
               v-for="(item, index) in dataAll.supplier"
               :key="index"
+              v-show="item.key!='点击输入'"
             >{{item.key}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="主要客户">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add4"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(4)"></el-button>
             </div>
             <div
               class="datatext"
               v-for="(item, index) in dataAll.customer"
               :key="index"
+              v-show="item.key!='点击输入'"
             >{{item.key}}</div>
           </el-form-item>
         </el-col>
@@ -165,21 +169,22 @@
         <el-col :span="6">
           <el-form-item label="第三方服务">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add5"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(5)"></el-button>
             </div>
             <div
               class="datatext"
               v-for="(item, index) in dataAll.facilitator"
               :key="index"
+              v-show="item.key!='点击输入'"
             >{{item.key}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="感兴趣展会">
             <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini"></el-input>
-              <el-button type="primary" icon="el-icon-plus" size="mini"></el-button>
+              <el-input placeholder="请输入内容" size="mini" v-model="add6"></el-input>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(6)"></el-button>
             </div>
             <div
               class="datatext"
@@ -197,6 +202,9 @@
               <label for="up">预览图片</label>
               <input type="file" id="up" value="图片上传预览">
             </div>
+            <div v-if="dataAll.logoUrl" style="width: 80px;height:80px;">
+              <img :src="dataAll.logoUrl " alt>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="24">
@@ -206,20 +214,25 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="公司介绍页">
-            <span style="position: absolute;top:20px;left:0px;color:red"></span>
-            <div class="upbtn">
-              <label for="up">预览图片</label>
-              <input type="file" id="up" value="图片上传预览">
-            </div>
-          </el-form-item>
-        </el-col>
-        <el-col :span="24">
           <el-form-item label="其他信息">
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
               <label for="up">预览图片</label>
-              <input type="file" id="up" value="图片上传预览">
+              <input type="file" id="up" value="图片上传预览" @change="upImg">
+            </div>
+            <div v-if="dataimgList.length >0" class="pictureList">
+              <div v-for="(item, index) in dataimgList" :key="index">
+                <img :src="item.picture.url" alt style="width: 80px;height:80px;">
+                <div style="width: 80px;">
+                  <input
+                    type="text"
+                    placeholder="请输入图片说明"
+                    v-model="item.picture.description"
+                    style="width: 80px;"
+                    @change="setData(item)"
+                  >
+                </div>
+              </div>
             </div>
           </el-form-item>
         </el-col>
@@ -236,7 +249,10 @@ import {
   getCompanyInfo,
   addNewCompany,
   addUserInfo,
-  getIndustry
+  getIndustry,
+  upload,
+  updatePicture,
+  savePicture
 } from "@/api/login";
 export default {
   data() {
@@ -268,6 +284,7 @@ export default {
         logoPic: [],
         introductionPic: ""
       },
+      dataimgList: [],
       industryData: [],
       items: [],
       options: [
@@ -317,7 +334,13 @@ export default {
           value: 6,
           name: "其他"
         }
-      ]
+      ],
+      add1: "",
+      add2: "",
+      add3: "",
+      add4: "",
+      add5: "",
+      add6: ""
     };
   },
   created() {
@@ -341,6 +364,7 @@ export default {
       getCompanyInfo(userid, id).then(res => {
         if (res.code === 0) {
           // linkmanEmail;
+          this.dataimgList = res.data.pictures;
           this.dataAll = Object.assign(this.dataAll, res.data.user);
           // this.dataAll = res.data.user;
           this.dataAll.keywords = JSON.parse(this.dataAll.keywords);
@@ -358,16 +382,163 @@ export default {
           this.dataAll.mobile = res.data.user.linkmanMobile;
           this.dataAll.position = res.data.user.linkmanPosition;
           // linkmanPosition
-          console.log(this.dataAll);
         }
       });
     },
+    // 修改
+    addUserInfo() {
+      let formData = new FormData();
+      formData.append("id", this.$route.params.id);
+      formData.append("name", this.dataAll.name);
+      formData.append("nameShort", this.dataAll.nameShort);
+      formData.append("engName", this.dataAll.nameEng);
+      formData.append("member", this.dataAll.member);
+      formData.append("address", this.dataAll.address);
+      formData.append("linkman", this.dataAll.linkman);
+      formData.append("position", this.dataAll.position);
+      formData.append("mobile", this.dataAll.mobile);
+      formData.append("linkmanEmail", this.dataAll.linkmanEmail);
+      formData.append("oneIndustry", this.dataAll.oneIndustry);
+      formData.append("twoIndustry", this.dataAll.twoIndustry);
+      formData.append("competitor", JSON.stringify(this.dataAll.competitor));
+      formData.append("keywords", JSON.stringify(this.dataAll.keywords));
+      formData.append("mainProcess", JSON.stringify(this.dataAll.mainProcess));
+      formData.append("facilitator", JSON.stringify(this.dataAll.facilitator));
+      formData.append("summary", this.dataAll.summary);
+      formData.append("exhibitions", JSON.stringify(this.dataAll.exhibitions));
+      formData.append("customer", JSON.stringify(this.dataAll.customer));
+      formData.append("logoPic", this.dataAll.logoPic);
+      formData.append("supplier", JSON.stringify(this.dataAll.supplier));
+      addUserInfo(formData).then(res => {
+        console.log(res.data);
+        if (res.data.code === 0) {
+          // console.log("修改成功");
+          this.$message({
+            type: "success",
+            message: "修改成功"
+          });
+          this.$router.push({
+            path: "/enterpriseAdmin"
+          });
+        }
+      });
+    },
+
+    setData(item) {
+      let formData = new FormData();
+      console.log(item);
+      formData.append("ossId", item.picture.ossId);
+      formData.append("description", item.picture.description);
+      formData.append("url", item.picture.url);
+      formData.append("userId", item.picture.userId);
+      formData.append("id", item.picture.id);
+      updatePicture(formData).then(res => {
+        if (res.data.code === 0) {
+        }
+      });
+    },
+    upImg(e) {
+      console.log(213);
+      let formData = new FormData();
+      let file = e.target.files[0];
+      formData.append("file", file);
+      upload(formData).then(res => {
+        var _this = this;
+        if (res.data.code === 0) {
+          let formDataTwo = new FormData();
+          formDataTwo.append("ossId", res.data.data);
+          formDataTwo.append("description", "");
+          formDataTwo.append(
+            "url",
+            `http://booth1.oss-cn-shanghai.aliyuncs.com/${
+              res.data.data
+            }?x-oss-process=image/format,png`
+          );
+          formDataTwo.append("userId", this.$route.params.id);
+          savePicture(formDataTwo).then(res => {
+            if (res.data.code === 0) {
+              _this.dataimgList.push({
+                isCollected: null,
+                picture: {
+                  createDate: "",
+                  ossId: res.data.data.ossId,
+                  url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
+                    res.data.data.ossId
+                  }?x-oss-process=image/format,png`,
+                  id: "",
+                  userId: this.$route.params.id,
+                  description: ""
+                }
+              });
+            }
+          });
+        }
+      });
+    },
+    add(num) {
+      switch (num) {
+        case 1:
+          for (let i = 0; i < this.dataAll.keywords.length; i++) {
+            if (this.dataAll.keywords[i].key === "点击输入") {
+              this.dataAll.keywords[i].key = this.add1;
+
+              return;
+            }
+          }
+          break;
+        case 2:
+          for (let i = 0; i < this.dataAll.competitor.length; i++) {
+            if (this.dataAll.competitor[i].key === "点击输入") {
+              this.dataAll.competitor[i].key = this.add2;
+              return;
+            }
+          }
+          break;
+        case 3:
+          for (let i = 0; i < this.dataAll.supplier.length; i++) {
+            if (this.dataAll.supplier[i].key === "点击输入") {
+              this.dataAll.supplier[i].key = this.add3;
+              return;
+            }
+          }
+          break;
+        case 4:
+          for (let i = 0; i < this.dataAll.customer.length; i++) {
+            if (this.dataAll.customer[i].key === "点击输入") {
+              this.dataAll.customer[i].key = this.add4;
+              return;
+            }
+          }
+          break;
+        case 5:
+          for (let i = 0; i < this.dataAll.facilitator.length; i++) {
+            if (this.dataAll.facilitator[i].key === "点击输入") {
+              this.dataAll.facilitator[i].key = this.add5;
+              return;
+            }
+          }
+          break;
+        case 6:
+          this.dataAll.exhibitions.push({
+            name: this.add6,
+            state: 1,
+            numID: "",
+            id: ""
+          });
+          break;
+        default:
+          break;
+      }
+    },
     trueover() {
       console.log("保存");
+      if (this.$route.params.id) {
+        this.addUserInfo();
+      }
     },
     quxiaoover() {
       this.$router.push({
-        path: "/Exhibition/ExhibitionList"
+        path: "/enterpriseAdmin"
       });
     }
   }
@@ -453,5 +624,12 @@ img {
 }
 .dialog-footer {
   padding: 0 90px;
+}
+.pictureList {
+  max-width: 100%;
+}
+.pictureList > div {
+  float: left;
+  margin: 0 20px;
 }
 </style>

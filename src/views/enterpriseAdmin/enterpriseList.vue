@@ -253,9 +253,10 @@ export default {
         id: idtitle,
         type: type
       };
-      console.log(parmes)
+      // console.log(parmes)
       freezeCompany(parmes).then(res => {
-        if (res.code === 0) {
+        // console.log(res)
+        if (res.data.code === 0) {
           this.$message({
             type: "success",
             message: "企业状态修改成功"

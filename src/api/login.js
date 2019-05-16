@@ -600,3 +600,39 @@ export function exportEnrollExcel(data) {
     return Promise.resolve(res.data)
   })
 }
+
+// 上传图片到OSS 
+export function upload(data) {
+  return axios({
+    url: `${api}/user/upload`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 修改
+export function updatePicture(data) {
+  return axios({
+    url: `${api}/user/updatePicture`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 新增
+export function savePicture(data) {
+  return axios({
+    url: `${api}/user/savePicture`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

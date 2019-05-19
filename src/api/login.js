@@ -637,14 +637,3 @@ export function savePicture(data) {
     }
   })
 }
-// // 搜索工商 
-// export function searchCompany(content) {
-//   const url = `${api}/search/searchCompany`
-//   return axios.get(url, {
-//     params: {
-//       content: content,
-//     }
-//   }).then((res) => {
-//     return Promise.resolve(res.data)
-//   })
-// }

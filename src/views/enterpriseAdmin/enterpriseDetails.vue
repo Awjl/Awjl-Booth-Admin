@@ -9,7 +9,7 @@
     >
       <el-row>
         <el-col :span="12">
-          <el-form-item label="账号">
+          <el-form-item label="邮箱">
             <el-input v-model="dataAll.email"></el-input>
             <span style="position: absolute;bottom:-30px;left:0px;color:red"></span>
           </el-form-item>
@@ -22,8 +22,28 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="公司名称">
-            <el-input v-model="dataAll.name"></el-input>
-            <span style="position: absolute;bottom:-30px;left:0px;color:red"></span>
+            <el-input v-model="dataAll.name" v-on:input="inputFunc()"></el-input>
+            <!-- <span ></span> -->
+            <div
+              style="position: absolute;
+              top:40px;
+              left:0px;
+              background:#fff;
+              z-index:999;
+              width:100%;
+              padding: 0 10px;
+              max-height: 274px;
+              overflow-y: auto;
+              box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+              "
+            >
+              <div
+                class
+                v-for="(item, index) in serachList"
+                :key="index"
+                @click.stop="tureBoxOne(item)"
+              >{{item.screenName}}</div>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -199,28 +219,28 @@
           <el-form-item label="公司logo">
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
-              <label for="up">预览图片</label>
-              <input type="file" id="up" value="图片上传预览">
+              <label for="up1">预览图片</label>
+              <input type="file" id="up1" value="图片上传预览" @change="uplogo">
             </div>
-            <div v-if="dataAll.logoUrl" style="width: 80px;height:80px;">
-              <img :src="dataAll.logoUrl " alt>
+            <div v-if="filebaseurl" style="width: 300px;">
+              <img :src="filebaseurl" alt>
             </div>
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="公司简介">
-            <el-input type="textarea" :rows="5" placeholder="请输入会展简介" v-model="dataAll.summary "></el-input>
+            <el-input type="textarea" :rows="5" placeholder="请输入公司简介" v-model="dataAll.summary"></el-input>
             <span style="position: absolute;bottom:-30px;left:0px;color:red"></span>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <el-col :span="24" v-if="showman">
           <el-form-item label="其他信息">
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
-              <label for="up">预览图片</label>
-              <input type="file" id="up" value="图片上传预览" @change="upImg">
+              <label for="uplist">预览图片</label>
+              <input type="file" id="uplist" value="图片上传预览" @change="upImg">
             </div>
-            <div v-if="dataimgList.length >0" class="pictureList">
+            <div class="pictureList">
               <div v-for="(item, index) in dataimgList" :key="index">
                 <img :src="item.picture.url" alt style="width: 80px;height:80px;">
                 <div style="width: 80px;">
@@ -230,6 +250,28 @@
                     v-model="item.picture.description"
                     style="width: 80px;"
                     @change="setData(item)"
+                  >
+                </div>
+              </div>
+            </div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24" v-if="!showman">
+          <el-form-item label="其他信息">
+            <span style="position: absolute;top:20px;left:0px;color:red"></span>
+            <div class="upbtn">
+              <label for="uplisttow">预览图片</label>
+              <input type="file" id="uplisttow" value="图片上传预览" @change="upImg">
+            </div>
+            <div class="pictureList">
+              <div v-for="(item, index) in dataAll.params" :key="index">
+                <img :src="item.url" alt style="width: 80px;height:80px;">
+                <div style="width: 80px;">
+                  <input
+                    type="text"
+                    placeholder="请输入图片说明"
+                    v-model="item.description"
+                    style="width: 80px;"
                   >
                 </div>
               </div>
@@ -252,7 +294,8 @@ import {
   getIndustry,
   upload,
   updatePicture,
-  savePicture
+  savePicture,
+  searchCompany
 } from "@/api/login";
 export default {
   data() {
@@ -272,15 +315,51 @@ export default {
         linkmanEmail: "",
         oneIndustry: "",
         twoIndustry: "",
-        keywords: "",
-        mainProcess: "",
+        keywords: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
+        mainProcess: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
         summary: "",
-        supplier: "",
-        competitor: "",
-        customer: "",
-        facilitator: "",
-        exhibitions: "",
-        params: "",
+        supplier: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
+        competitor: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
+        customer: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
+        facilitator: [
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" },
+          { key: "点击输入" }
+        ],
+        exhibitions: [],
+        params: [],
         logoPic: [],
         introductionPic: ""
       },
@@ -335,15 +414,27 @@ export default {
           name: "其他"
         }
       ],
+      filebase: "",
+      filebaseurl: "",
       add1: "",
       add2: "",
       add3: "",
       add4: "",
       add5: "",
-      add6: ""
+      add6: "",
+      showman: false,
+      imgType: {
+        type: "image/jpeg, image/png, image/jpg"
+      },
+      serachList: []
     };
   },
   created() {
+    if (this.$route.params.id == "null") {
+      this.showman = false;
+    } else {
+      this.showman = true;
+    }
     this._getIndustry();
   },
   methods: {
@@ -367,6 +458,8 @@ export default {
           this.dataimgList = res.data.pictures;
           this.dataAll = Object.assign(this.dataAll, res.data.user);
           // this.dataAll = res.data.user;
+          this.filebaseurl = this.dataAll.logoUrl;
+
           this.dataAll.keywords = JSON.parse(this.dataAll.keywords);
           this.dataAll.mainProcess = JSON.parse(this.dataAll.mainProcess);
           this.dataAll.supplier = JSON.parse(this.dataAll.supplier);
@@ -376,7 +469,6 @@ export default {
           this.dataAll.exhibitions = JSON.parse(
             this.dataAll.interestedExhibitions
           );
-
           this.dataAll.oneIndustry = res.data.user.oneIndustryid;
           this.dataAll.twoIndustry = res.data.user.twoIndustryid;
           this.dataAll.mobile = res.data.user.linkmanMobile;
@@ -388,6 +480,7 @@ export default {
     // 修改
     addUserInfo() {
       let formData = new FormData();
+
       formData.append("id", this.$route.params.id);
       formData.append("name", this.dataAll.name);
       formData.append("nameShort", this.dataAll.nameShort);
@@ -407,7 +500,7 @@ export default {
       formData.append("summary", this.dataAll.summary);
       formData.append("exhibitions", JSON.stringify(this.dataAll.exhibitions));
       formData.append("customer", JSON.stringify(this.dataAll.customer));
-      formData.append("logoPic", this.dataAll.logoPic);
+      formData.append("logoPic", this.filebase);
       formData.append("supplier", JSON.stringify(this.dataAll.supplier));
       addUserInfo(formData).then(res => {
         console.log(res.data);
@@ -423,7 +516,55 @@ export default {
         }
       });
     },
-
+    // 新增
+    addNewCompany() {
+      let formData = new FormData();
+      formData.append("params", JSON.stringify(this.dataAll.params));
+      formData.append("email ", this.dataAll.email);
+      formData.append("password ", this.dataAll.password);
+      formData.append("name", this.dataAll.name);
+      formData.append("nameShort", this.dataAll.nameShort);
+      formData.append("engName", this.dataAll.nameEng);
+      formData.append("member", this.dataAll.member);
+      formData.append("address ", this.dataAll.address);
+      formData.append("linkman", this.dataAll.linkman);
+      formData.append("oneIndustry", this.dataAll.oneIndustry);
+      formData.append("twoIndustry", this.dataAll.twoIndustry);
+      formData.append("linkmanEmail", this.dataAll.linkmanEmail);
+      formData.append("position", this.dataAll.position);
+      formData.append("mobile", this.dataAll.mobile);
+      formData.append("competitor", JSON.stringify(this.dataAll.competitor));
+      formData.append("keywords", JSON.stringify(this.dataAll.keywords));
+      formData.append("mainProcess", JSON.stringify(this.dataAll.mainProcess));
+      formData.append("facilitator", JSON.stringify(this.dataAll.facilitator));
+      formData.append("summary", this.dataAll.summary);
+      formData.append("exhibitions", JSON.stringify(this.dataAll.exhibitions));
+      formData.append("customer", JSON.stringify(this.dataAll.customer));
+      formData.append("logoPic", this.filebase);
+      formData.append("supplier", JSON.stringify(this.dataAll.supplier));
+      addNewCompany(formData).then(res => {
+        console.log(res.data);
+        if (res.data.code === 0) {
+          this.$message({
+            type: "success",
+            message: "新增成功"
+          });
+          this.$router.push({
+            path: "/enterpriseAdmin"
+          });
+        } else if (res.data.code === 500503) {
+          this.$message({
+            type: "error",
+            message: "用户已存在"
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "信息填写错误"
+          });
+        }
+      });
+    },
     setData(item) {
       let formData = new FormData();
       console.log(item);
@@ -437,43 +578,95 @@ export default {
         }
       });
     },
+    setTime() {
+      this.timer = setTimeout(() => {
+        this._searchCompany();
+      }, 1000);
+    },
+    inputFunc() {
+      // 搜索 1
+      clearInterval(this.timer);
+      this.setTime();
+    },
+    tureBoxOne(item) {
+      if (item) {
+         this.dataAll.name = item.screenName;
+         this.dataAll.address = item.address;
+      }
+      this.serachList = [];
+    },
+    _searchCompany() {
+      searchCompany(this.dataAll.name).then(res => {
+        console.log(res);
+        if (res.retcode === "000000") {
+          this.serachList = res.data;
+          console.log(this.serachList);
+        }
+      });
+    },
     upImg(e) {
-      console.log(213);
       let formData = new FormData();
       let file = e.target.files[0];
       formData.append("file", file);
       upload(formData).then(res => {
         var _this = this;
         if (res.data.code === 0) {
-          let formDataTwo = new FormData();
-          formDataTwo.append("ossId", res.data.data);
-          formDataTwo.append("description", "");
-          formDataTwo.append(
-            "url",
-            `http://booth1.oss-cn-shanghai.aliyuncs.com/${
-              res.data.data
-            }?x-oss-process=image/format,png`
-          );
-          formDataTwo.append("userId", this.$route.params.id);
-          savePicture(formDataTwo).then(res => {
-            if (res.data.code === 0) {
-              _this.dataimgList.push({
-                isCollected: null,
-                picture: {
-                  createDate: "",
-                  ossId: res.data.data.ossId,
-                  url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
-                    res.data.data.ossId
-                  }?x-oss-process=image/format,png`,
-                  id: "",
-                  userId: this.$route.params.id,
-                  description: ""
-                }
-              });
-            }
-          });
+          if (this.$route.params.id !== "null") {
+            let formDataTwo = new FormData();
+            formDataTwo.append("ossId", res.data.data);
+            formDataTwo.append("description", "");
+            formDataTwo.append(
+              "url",
+              `http://booth1.oss-cn-shanghai.aliyuncs.com/${
+                res.data.data
+              }?x-oss-process=image/format,png`
+            );
+            formDataTwo.append("userId", this.$route.params.id);
+            savePicture(formDataTwo).then(res => {
+              if (res.data.code === 0) {
+                _this.dataimgList.push({
+                  isCollected: null,
+                  picture: {
+                    createDate: "",
+                    ossId: res.data.data.ossId,
+                    url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
+                      res.data.data.ossId
+                    }?x-oss-process=image/format,png`,
+                    id: "",
+                    userId: this.$route.params.id,
+                    description: ""
+                  }
+                });
+              }
+            });
+          } else {
+            this.dataAll.params.push({
+              ossId: res.data.data,
+              url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
+                res.data.data
+              }?x-oss-process=image/format,png`,
+              description: ""
+            });
+            console.log(this.dataAll.params);
+          }
         }
       });
+    },
+    uplogo(e) {
+      let avatarImg = e.target.files[0];
+      let avatarImgtype = avatarImg.type;
+      if (this.imgType.type.indexOf(avatarImgtype) === -1) {
+        this.$message.error("格式不正确");
+        return false;
+      } else {
+        const _this = this;
+        const reader = new FileReader();
+        reader.readAsDataURL(avatarImg);
+        reader.onload = function(e) {
+          _this.filebaseurl = e.target.result;
+        };
+        this.filebase = avatarImg;
+      }
     },
     add(num) {
       switch (num) {
@@ -523,7 +716,7 @@ export default {
             name: this.add6,
             state: 1,
             numID: "",
-            id: ""
+            id: 0
           });
           break;
         default:
@@ -532,8 +725,10 @@ export default {
     },
     trueover() {
       console.log("保存");
-      if (this.$route.params.id) {
+      if (this.showman) {
         this.addUserInfo();
+      } else {
+        this.addNewCompany();
       }
     },
     quxiaoover() {
@@ -605,6 +800,7 @@ img {
 }
 .delbox {
   position: relative;
+  /* box-shadow:  */
 }
 .btndel {
   width: 80px;

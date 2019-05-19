@@ -586,20 +586,21 @@ export function freezeCompany(data) {
     data: data
   })
 }
-// 导出报名列表
-export function exportEnrollExcel(data) {
-  const url = `${api}/sys/exportEnrollExcel`
-  return axios.post(url, {
-    companyName: data.companyName,
-    name: data.name,
-    mobile: data.mobile,
-    title: data.title,
-    beginDate: data.beginDate,
-    endDate: data.endDate,
-  }).then((res) => {
-    return Promise.resolve(res.data)
-  })
-}
+// // 导出报名列表
+// export function exportEnrollExcel(data) {
+//   const url = `${api}/sys/exportEnrollExcel`
+//   console.log(data)
+//   return axios.post(url, {
+//     companyName: data.companyName,
+//     name: data.name,
+//     mobile: data.mobile,
+//     title: data.title,
+//     beginDate: data.beginDate,
+//     endDate: data.endDate,
+//   }).then((res) => {
+//     return Promise.resolve(res.data)
+//   })
+// }
 
 // 上传图片到OSS 
 export function upload(data) {
@@ -636,3 +637,14 @@ export function savePicture(data) {
     }
   })
 }
+// // 搜索工商 
+// export function searchCompany(content) {
+//   const url = `${api}/search/searchCompany`
+//   return axios.get(url, {
+//     params: {
+//       content: content,
+//     }
+//   }).then((res) => {
+//     return Promise.resolve(res.data)
+//   })
+// }

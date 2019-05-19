@@ -4,7 +4,7 @@
       <el-input
         style="width: 200px;"
         class="filter-item"
-        placeholder="请输入企业名称"
+        placeholder="请输入展会名称"
         v-model="upDataList.companyName"
       ></el-input>
       <el-date-picker
@@ -106,21 +106,12 @@ export default {
       this._getAllEnroll();
     },
     daochu() {
-      let data = {
-        companyName: this.upDataList.companyName,
-        name: this.upDataList.name,
-        mobile: this.upDataList.mobile,
-        title: this.upDataList.title,
-        beginDate: this.upDataList.beginDate,
-        endDate: this.upDataList.endDate
-      };
-      exportEnrollExcel(data).then(res => {
-        if (res.code === ERR_OK) {
-          console.log(res.data);
-          console.log("成功");
-          window.location.href = `http://www.booth.vip/${res.data}`;
-        }
-      });
+      // // /sys/exportEnrollExcel
+      // if (this.upDataList.name) {
+
+      // }
+      //  window.location.href = `http://www.booth.vip/booth/sys/exportEnrollExcel?companyName=${this.upDataList.companyName}&name=${this.upDataList.name}&mobile=${this.upDataList.mobile}&title=${this.upDataList.title}&beginDate=${this.upDataList.beginDate}&endDate=${this.upDataList.endDate}`;
+      window.location.href = `http://www.booth.vip/booth/sys/exportEnrollExcel`;
     },
     suchbox() {
       this.upDataList.pageSize = 10;

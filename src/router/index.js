@@ -155,6 +155,17 @@ export const constantRouterMap = [
     }]
   },
   {
+    path: '/link',
+    component: Layout,
+    redirect: 'link',
+    children: [{
+      path: 'link',
+      component: () => import('@/views/link/index'),
+      name: 'system',
+      meta: { title: '数据统计', icon: 'lock', noCache: true }
+    }]
+  },
+  {
     path: '',
     component: Layout,
     redirect: 'system',

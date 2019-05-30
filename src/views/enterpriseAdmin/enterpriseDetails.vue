@@ -106,7 +106,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="一级行业">
-            <el-select v-model="dataAll.oneIndustry" placeholder="请选择">
+            <el-select v-model="dataAll.oneIndustry" placeholder="请选择" @change="currentSel">
               <el-option
                 :value="item.id"
                 :label="item.industryName"
@@ -438,6 +438,20 @@ export default {
     this._getIndustry();
   },
   methods: {
+    //
+    currentSel() {
+      // this.upDataList.twoIndustry = "";
+      // this.upDataList.industryName = this.dataList[
+      //   this.upDataList.oneIndustry - 1
+      // ].industryName;
+      this.items = this.industryData[
+        this.dataAll.oneIndustry - 1
+      ].secondIndustries;
+
+       this.dataAll.twoIndustry = this.industryData[
+        this.dataAll.oneIndustry - 1
+      ].secondIndustries[0].id
+    },
     //获取行业列表
     _getIndustry() {
       getIndustry().then(res => {
@@ -473,7 +487,11 @@ export default {
           this.dataAll.twoIndustry = res.data.user.twoIndustryid;
           this.dataAll.mobile = res.data.user.linkmanMobile;
           this.dataAll.position = res.data.user.linkmanPosition;
-          // linkmanPosition
+
+          this.items = this.industryData[
+            this.dataAll.oneIndustry - 1
+          ].secondIndustries;
+          console.log(this.items);
         }
       });
     },
@@ -590,8 +608,8 @@ export default {
     },
     tureBoxOne(item) {
       if (item) {
-         this.dataAll.name = item.screenName;
-         this.dataAll.address = item.address;
+        this.dataAll.name = item.screenName;
+        this.dataAll.address = item.address;
       }
       this.serachList = [];
     },

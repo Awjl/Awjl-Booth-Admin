@@ -162,7 +162,7 @@ export const constantRouterMap = [
       path: 'link',
       component: () => import('@/views/link/index'),
       name: 'system',
-      meta: { title: '数据统计', icon: 'lock', noCache: true }
+      meta: { title: '数据统计', icon: 'chart', noCache: true }
     }]
   },
   {

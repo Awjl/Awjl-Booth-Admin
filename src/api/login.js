@@ -199,7 +199,25 @@ export function searchCompany(content) {
     return Promise.resolve(res.data)
   })
 }
-// 添加参展商或这到访商/sys/addExhibitior
+// 搜索展会名称 1
+export function searchExhibition(name) {
+  // return service({
+  //     url: `/search/searchExhibition`,
+  //     method: "get",
+  //     params: {
+  //         name: name
+  //     }
+  // });
+  const url = `${api}/search/searchExhibition`
+  return axios.get(url, {
+    params: {
+      name: name
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 添加参展商或这到访商
 export function addExhibitior(data) {
   const url = `${api}/sys/addExhibitior`
   return axios.post(url, data).then((res) => {

@@ -202,9 +202,24 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="感兴趣展会">
-            <div style="display:flex;  justify-content: space-between;align-items: center">
-              <el-input placeholder="请输入内容" size="mini" v-model="add6"></el-input>
+            <div
+              style="display:flex;position: relative; justify-content: space-between;align-items: center"
+            >
+              <el-input
+                placeholder="请输入内容"
+                size="mini"
+                v-model="add6"
+                v-on:input="inputFuncServer()"
+              ></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(6)"></el-button>
+              <div class="ExhibitionallLeftBox">
+                <div
+                  class="ExhibitionallLeftBoxList"
+                  v-for="(item, index) in searchExh"
+                  :key="index"
+                  @click="trueExhibitionall(item)"
+                >{{item.name}}</div>
+              </div>
             </div>
             <div
               class="datatext"
@@ -295,6 +310,7 @@ import {
   upload,
   updatePicture,
   savePicture,
+  searchExhibition,
   searchCompany
 } from "@/api/login";
 export default {
@@ -422,11 +438,16 @@ export default {
       add4: "",
       add5: "",
       add6: "",
+      add6ID: "",
       showman: false,
       imgType: {
         type: "image/jpeg, image/png, image/jpg"
       },
-      serachList: []
+      serachList: [],
+      searchExh: [],
+      Exhibitionindex: 0,
+      searchcenter: "",
+      timer2: ""
     };
   },
   created() {
@@ -438,19 +459,14 @@ export default {
     this._getIndustry();
   },
   methods: {
-    //
     currentSel() {
-      // this.upDataList.twoIndustry = "";
-      // this.upDataList.industryName = this.dataList[
-      //   this.upDataList.oneIndustry - 1
-      // ].industryName;
       this.items = this.industryData[
         this.dataAll.oneIndustry - 1
       ].secondIndustries;
 
-       this.dataAll.twoIndustry = this.industryData[
+      this.dataAll.twoIndustry = this.industryData[
         this.dataAll.oneIndustry - 1
-      ].secondIndustries[0].id
+      ].secondIndustries[0].id;
     },
     //获取行业列表
     _getIndustry() {
@@ -463,6 +479,30 @@ export default {
           }
         }
       });
+    },
+    _searchExhibition(name) {
+      searchExhibition(name).then(res => {
+        if (res.code === 0) {
+          this.searchExh = res.data;
+        }
+      });
+    },
+    setTime2() {
+      this.timer2 = setTimeout(() => {
+        this._searchExhibition(this.searchcenter);
+      }, 1000);
+    },
+    inputFuncServer() {
+      clearInterval(this.timer2);
+      this.searchExh = [];
+      this.searchcenter = this.add6;
+      this.setTime2()
+      // this._searchExhibition(this.searchcenter);
+    },
+    trueExhibitionall(item) {
+      this.searchExh = [];
+      this.add6 = item.name;
+      this.add6ID = item.id;
     },
     // 获取用户详细信息
     _getCompanyInfo(userid, id) {
@@ -491,7 +531,6 @@ export default {
           this.items = this.industryData[
             this.dataAll.oneIndustry - 1
           ].secondIndustries;
-          console.log(this.items);
         }
       });
     },
@@ -521,7 +560,6 @@ export default {
       formData.append("logoPic", this.filebase);
       formData.append("supplier", JSON.stringify(this.dataAll.supplier));
       addUserInfo(formData).then(res => {
-        console.log(res.data);
         if (res.data.code === 0) {
           // console.log("修改成功");
           this.$message({
@@ -692,7 +730,6 @@ export default {
           for (let i = 0; i < this.dataAll.keywords.length; i++) {
             if (this.dataAll.keywords[i].key === "点击输入") {
               this.dataAll.keywords[i].key = this.add1;
-
               return;
             }
           }
@@ -730,10 +767,12 @@ export default {
           }
           break;
         case 6:
+          // this.add6 = item.name;
+          // this.add6ID = item.id;
           this.dataAll.exhibitions.push({
             name: this.add6,
             state: 1,
-            numID: "",
+            numID: this.add6ID,
             id: 0
           });
           break;
@@ -801,6 +840,21 @@ img {
   position: relative;
   border-radius: 10px;
   margin-bottom: 50px;
+}
+.ExhibitionallLeftBox {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  max-height: 150px;
+  bottom: 36px;
+  overflow: auto;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+.ExhibitionallLeftBoxList {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
 }
 .upbtn label {
   position: absolute;

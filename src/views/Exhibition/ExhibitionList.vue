@@ -91,12 +91,19 @@
             <p style=" text-align: center;font-weight: bold;">参展商列表</p>
             <div class="seachBox">
               <el-input
-                style="width: 80%"
+                style="width: 40%"
                 class="filter-item"
                 size="mini"
                 placeholder="请输入参展商名称"
                 v-on:input="inputFunc"
                 v-model="center"
+              ></el-input>
+              <el-input
+                style="width: 40%"
+                class="filter-item"
+                size="mini"
+                placeholder="请输入参展商摊位"
+                v-model="stand"
               ></el-input>
               <el-button
                 class="filter-item"
@@ -266,6 +273,7 @@ export default {
       showTwo: false,
       timer: "",
       center: "",
+      stand: "",
       serachList: [],
       centerOne: "",
       dataArr: [],
@@ -288,6 +296,7 @@ export default {
       },
       UpItem: {
         exhibitionId: "",
+        stand: "",
         name: "",
         type: ""
       },
@@ -334,6 +343,7 @@ export default {
         if (res.code === 0) {
           this.center = "";
           this.centerOne = "";
+          this.stand = "";
           this.$message({
             type: "success",
             message: "添加成功"
@@ -447,6 +457,7 @@ export default {
     addOneItem() {
       this.UpItem.type = 1;
       this.UpItem.name = this.center;
+      this.UpItem.stand = this.stand;
       this.oneBox = false;
       this.twoBox = false;
       this._addExhibitior();

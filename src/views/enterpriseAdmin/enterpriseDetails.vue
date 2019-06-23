@@ -257,6 +257,7 @@
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataimgList" :key="index">
+                <div class="UpImgButton" @click="removeButton(item.picture.ossId, index)">删除</div>
                 <img :src="item.picture.url" alt style="width: 80px;height:80px;">
                 <div style="width: 80px;">
                   <input
@@ -266,6 +267,7 @@
                     style="width: 80px;"
                     @change="setData(item)"
                   >
+                  
                 </div>
               </div>
             </div>
@@ -280,6 +282,7 @@
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataAll.params" :key="index">
+                <div class="UpImgButton" @click="removeButton(item.picture.ossId, index)">删除</div>
                 <img :src="item.url" alt style="width: 80px;height:80px;">
                 <div style="width: 80px;">
                   <input
@@ -289,6 +292,7 @@
                     style="width: 80px;"
                   >
                 </div>
+                
               </div>
             </div>
           </el-form-item>
@@ -311,6 +315,7 @@ import {
   updatePicture,
   savePicture,
   searchExhibition,
+  deletePicture,
   searchCompany
 } from "@/api/login";
 export default {
@@ -496,13 +501,21 @@ export default {
       clearInterval(this.timer2);
       this.searchExh = [];
       this.searchcenter = this.add6;
-      this.setTime2()
+      this.setTime2();
       // this._searchExhibition(this.searchcenter);
     },
     trueExhibitionall(item) {
       this.searchExh = [];
       this.add6 = item.name;
       this.add6ID = item.id;
+    },
+    // 删除
+    removeButton(id, index) {
+       deletePicture(id).then(res => {
+        if (res.data.code === 0) {
+        this.dataimgList.splice(index, 1);
+        }
+      });
     },
     // 获取用户详细信息
     _getCompanyInfo(userid, id) {
@@ -895,6 +908,17 @@ img {
 }
 .pictureList {
   max-width: 100%;
+}
+.pictureList .UpImgButton {
+  width: 80px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  margin: 0 auto;
+  cursor: pointer;
+  background: #2c73a1;
+  color: #fff;
+  border-radius: 4px;
 }
 .pictureList > div {
   float: left;

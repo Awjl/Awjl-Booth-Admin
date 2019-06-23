@@ -655,3 +655,10 @@ export function savePicture(data) {
     }
   })
 }
+// 删除
+export function deletePicture(ossId) {
+  return axios({
+      url: `${api}/user/deletePicture/${ossId}`,
+      method: "post",
+  });
+}

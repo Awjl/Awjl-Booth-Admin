@@ -98,8 +98,9 @@
               <label for="upone">预览图片</label>
               <input type="file" @change="upimagesOne" id="upone" value="图片上传预览">
             </div>
-            <div v-if="upDataList.summaryPicUrl">
+            <div v-if="upDataList.summaryPicUrl" class="delbox">
               <img :src="upDataList.summaryPicUrl" alt>
+              <div class="btndel" @click="delImgOne(index)">删除</div>
             </div>
           </el-form-item>
         </el-col>
@@ -110,8 +111,14 @@
               <input type="file" @change="upimagesTwo" id="upTwo" value="图片上传预览" multiple>
             </div>
             <el-row v-if="upDataList.bannerPicsUrl.length > 0">
-              <el-col :span="8" v-for="(item, index) in upDataList.bannerPicsUrl" :key="index">
+              <el-col
+                :span="8"
+                v-for="(item, index) in upDataList.bannerPicsUrl"
+                :key="index"
+                class="delbox"
+              >
                 <img :src="item" alt>
+                <div class="btndel" @click="delImgTwo(index)">删除</div>
               </el-col>
             </el-row>
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
@@ -124,8 +131,9 @@
               <label for="upThree">预览图片</label>
               <input type="file" @change="upimagesThree" id="upThree" value="图片上传预览">
             </div>
-            <div v-if="upDataList.mapPicUrl">
+            <div v-if="upDataList.mapPicUrl" class="delbox">
               <img :src="upDataList.mapPicUrl" alt>
+              <div class="btndel" @click="delImgThree()">删除</div>
             </div>
           </el-form-item>
         </el-col>
@@ -136,8 +144,9 @@
               <label for="upfore">预览图片</label>
               <input type="file" @change="upimagesfour" id="upfore" value="图片上传预览">
             </div>
-            <div v-if="upDataList.trafficPicUrl">
+            <div v-if="upDataList.trafficPicUrl" class="delbox">
               <img :src="upDataList.trafficPicUrl" alt>
+              <div class="btndel" @click="delImgfour()">删除</div>
             </div>
           </el-form-item>
         </el-col>
@@ -266,6 +275,23 @@ export default {
       this.dataItem = this.dataList[
         this.upDataList.oneIndustry - 1
       ].secondIndustries;
+    },
+    delImgOne() {
+      this.upDataList.summaryPicUrl = "";
+      this.upDataList.summaryPic = "";
+    },
+    delImgTwo(index) {
+      console.log(index)
+      this.upDataList.bannerPicsUrl.splice(index, 1);
+      this.upDataList.bannerPics.splice(index, 1);
+    },
+    delImgThree() {
+      this.upDataList.mapPicUrl = "";
+      this.upDataList.mapPic = "";
+    },
+    delImgfour() {
+      this.upDataList.trafficPicUrl = "";
+      this.upDataList.trafficPic = "";
     },
     currentSelTwo(vId) {
       let obj = {};

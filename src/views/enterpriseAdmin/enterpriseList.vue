@@ -11,12 +11,12 @@
         clearable
         style="width: 150px"
         class="filter-item"
-        placeholder="选择认证状态"
-        v-model="upDataList.isAuthenticate"
+        placeholder="选择企业动态"
+        v-model="upDataList.isActivate"
       >
-        <el-option label="已认证" :value="0">等待认证</el-option>
-        <el-option label="未认证" :value="1">已认证</el-option>
-        <el-option label="未认证" :value="2">未认证</el-option>
+        <el-option label="已冻结" :value="2">已冻结</el-option>
+        <el-option label="未冻结" :value="1">未冻结</el-option>
+        <!-- <el-option label="未认证" :value="2">未认证</el-option> -->
       </el-select>
       <el-date-picker
         v-model="dataArr"
@@ -223,6 +223,7 @@ export default {
         secondIndustryId: null,
         isRecommend: null,
         isAuthenticate: null,
+        isActivate: null,
         beginDate: null,
         endDate: null,
         pageNum: 1,

@@ -107,6 +107,7 @@ export function getAllCompany(data) {
       secondIndustryId: data.secondIndustryId,
       isRecommend: data.isRecommend,
       isAuthenticate: data.isAuthenticate,
+      isActivate:  data.isActivate,
       beginDate: data.beginDate,
       endDate: data.endDate,
       pageNum: data.pageNum,
@@ -656,9 +657,13 @@ export function savePicture(data) {
   })
 }
 // 删除
-export function deletePicture(ossId) {
+export function deletePicture(ossId, id) {
   return axios({
-      url: `${api}/user/deletePicture/${ossId}`,
+      url: `${api}/user/deleteCompanyPic`,
       method: "post",
+      data: {
+        ossId: ossId,
+        id: id,  
+    },
   });
 }

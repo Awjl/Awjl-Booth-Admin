@@ -227,6 +227,16 @@ export default {
           this.$router.push({
             path: "/Exhibition/ExhibitionList"
           });
+        } else if (res.data.code === 500513) {
+          this.$message({
+            type: "error",
+            message: "中文名称已存在"
+          });
+        } else if (res.data.code === 500514) {
+          this.$message({
+            type: "error",
+            message: "英文名称已存在"
+          });
         }
       });
     },
@@ -239,6 +249,16 @@ export default {
           });
           this.$router.push({
             path: "/Exhibition/ExhibitionList"
+          });
+        } else if (res.data.code === 500513) {
+          this.$message({
+            type: "error",
+            message: "中文名称已存在"
+          });
+        } else if (res.data.code === 500514) {
+          this.$message({
+            type: "error",
+            message: "英文名称已存在"
           });
         }
       });
@@ -281,7 +301,7 @@ export default {
       this.upDataList.summaryPic = "";
     },
     delImgTwo(index) {
-      console.log(index)
+      console.log(index);
       this.upDataList.bannerPicsUrl.splice(index, 1);
       this.upDataList.bannerPics.splice(index, 1);
     },
@@ -301,7 +321,6 @@ export default {
       // this.upDataList.industryName = obj.industryName;
     },
     trueover() {
-      console.log("保存");
       this.upData.append("name", this.upDataList.name);
       this.upData.append("nameEng", this.upDataList.nameEng);
       this.upData.append("title", this.upDataList.title);
@@ -324,8 +343,64 @@ export default {
       this.upData.append("trafficPic", this.upDataList.trafficPic);
       if (this.$route.params.id !== "null") {
         this.upData.append("id", this.upDataList.id);
+        if (this.upDataList.summaryPic === "" && this.upDataList.summaryPicUrl === "") {
+          this.$message({
+            type: "error",
+            message: "会展宣传图不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.bannerPics.length === 0 && this.upDataList.bannerPicsUrl.length === 0) {
+          this.$message({
+            type: "error",
+            message: "会展banner不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.mapPic === ""&& this.upDataList.mapPicUrl === "") {
+          this.$message({
+            type: "error",
+            message: "会展场馆图不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.trafficPic === "" && this.upDataList.trafficPicUrl === "") {
+          this.$message({
+            type: "error",
+            message: "会展交通图不能为空"
+          });
+          return;
+        }
         this._editExhibition();
       } else {
+        if (this.upDataList.summaryPic === "") {
+          this.$message({
+            type: "error",
+            message: "会展宣传图不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.bannerPics.length === 0) {
+          this.$message({
+            type: "error",
+            message: "会展banner不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.mapPic === "") {
+          this.$message({
+            type: "error",
+            message: "会展场馆图不能为空"
+          });
+          return;
+        }
+        if (this.upDataList.trafficPic === "") {
+          this.$message({
+            type: "error",
+            message: "会展交通图不能为空"
+          });
+          return;
+        }
         this._addExhibition();
       }
     },

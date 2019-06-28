@@ -257,7 +257,10 @@
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataimgList" :key="index">
-                <div class="UpImgButton" @click="removeButton(item.picture.ossId, index)">删除</div>
+                <div
+                  class="UpImgButton"
+                  @click="removeButton(item.picture.ossId,item.picture.id, index)"
+                >删除</div>
                 <img :src="item.picture.url" alt style="width: 80px;height:80px;">
                 <div style="width: 80px;">
                   <input
@@ -267,7 +270,6 @@
                     style="width: 80px;"
                     @change="setData(item)"
                   >
-                  
                 </div>
               </div>
             </div>
@@ -282,7 +284,10 @@
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataAll.params" :key="index">
-                <div class="UpImgButton" @click="removeButton(item.picture.ossId, index)">删除</div>
+                <div
+                  class="UpImgButton"
+                  @click="removeButton(item.picture.ossId, item.picture.id,index)"
+                >删除</div>
                 <img :src="item.url" alt style="width: 80px;height:80px;">
                 <div style="width: 80px;">
                   <input
@@ -292,7 +297,6 @@
                     style="width: 80px;"
                   >
                 </div>
-                
               </div>
             </div>
           </el-form-item>
@@ -510,10 +514,10 @@ export default {
       this.add6ID = item.id;
     },
     // 删除
-    removeButton(id, index) {
-       deletePicture(id).then(res => {
+    removeButton(ossId, id, index) {
+      deletePicture(ossId, id).then(res => {
         if (res.data.code === 0) {
-        this.dataimgList.splice(index, 1);
+          this.dataimgList.splice(index, 1);
         }
       });
     },
@@ -574,13 +578,24 @@ export default {
       formData.append("supplier", JSON.stringify(this.dataAll.supplier));
       addUserInfo(formData).then(res => {
         if (res.data.code === 0) {
-          // console.log("修改成功");
           this.$message({
             type: "success",
             message: "修改成功"
           });
           this.$router.push({
             path: "/enterpriseAdmin"
+          });
+        } else if (res.data.code === 500511) {
+          this.$message({
+            type: "error",
+            message:
+              "不好意思,该企业中文名称已被注册,请更改企业名称或者致电400-901-8021申述此名称"
+          });
+        } else if (res.data.code === 500512) {
+          this.$message({
+            type: "error",
+            message:
+              "不好意思,该企业英文名称已被注册,请更改企业名称或者致电400-901-8021申述此名称"
           });
         }
       });
@@ -625,6 +640,18 @@ export default {
           this.$message({
             type: "error",
             message: "用户已存在"
+          });
+        } else if (res.data.code === 500511) {
+          this.$message({
+            type: "error",
+            message:
+              "不好意思,该企业中文名称已被注册,请更改企业名称或者致电400-901-8021申述此名称"
+          });
+        } else if (res.data.code === 500512) {
+          this.$message({
+            type: "error",
+            message:
+              "不好意思,该企业英文名称已被注册,请更改企业名称或者致电400-901-8021申述此名称"
           });
         } else {
           this.$message({

@@ -11,6 +11,17 @@
         clearable
         style="width: 150px"
         class="filter-item"
+         placeholder="选择认证状态"
+        v-model="upDataList.isAuthenticate"
+      >
+         <el-option label="已认证" :value="0">等待认证</el-option>
+        <el-option label="未认证" :value="1">已认证</el-option>
+        <el-option label="未认证" :value="2">未认证</el-option>
+      </el-select>
+      <el-select
+        clearable
+        style="width: 150px"
+        class="filter-item"
         placeholder="选择企业动态"
         v-model="upDataList.isActivate"
       >
@@ -276,7 +287,6 @@ export default {
     _recommendCompany(id, isRecommend) {
       recommendCompany(id, isRecommend).then(res => {
         if (res.code === 0) {
-          console.log(res);
           this._getAllCompany();
         }
       });
@@ -284,7 +294,6 @@ export default {
     _getAllCompanyByIndustryAndArea() {
       getAllCompanyByIndustryAndArea(this.upSearchList).then(res => {
         if (res.code === 0) {
-          console.log(res);
           this.AllExhibitionList = res.data;
         }
       });

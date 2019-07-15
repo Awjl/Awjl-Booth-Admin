@@ -208,8 +208,8 @@ export default {
     this._getIndustry();
   },
   methods: {
-    _getIndustry(id) {
-      getIndustry(id).then(res => {
+    _getIndustry() {
+      getIndustry().then(res => {
         this.dataList = res.data;
         this.dataItem = this.dataList[0].secondIndustries;
         if (this.$route.params.id !== "null") {
@@ -301,7 +301,6 @@ export default {
       this.upDataList.summaryPic = "";
     },
     delImgTwo(index) {
-      console.log(index);
       this.upDataList.bannerPicsUrl.splice(index, 1);
       this.upDataList.bannerPics.splice(index, 1);
     },
@@ -321,6 +320,7 @@ export default {
       // this.upDataList.industryName = obj.industryName;
     },
     trueover() {
+      this.upData = new FormData();
       this.upData.append("name", this.upDataList.name);
       this.upData.append("nameEng", this.upDataList.nameEng);
       this.upData.append("title", this.upDataList.title);
@@ -458,7 +458,6 @@ export default {
         reader.readAsDataURL(avatarImg);
         reader.onload = function(e) {
           _this.upDataList.mapPicUrl = e.target.result;
-          console.log(_this.upDataList);
         };
         this.upDataList.mapPic = avatarImg;
       }

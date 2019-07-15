@@ -3,7 +3,6 @@ import axios from 'axios'
 
 export function login(data) {
   const url = `${api}/sys/login`
-  console.log(url)
   return axios.post(url, {
     username: data.username,
     password: data.password

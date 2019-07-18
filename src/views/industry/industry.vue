@@ -202,6 +202,8 @@ export default {
       };
       if (type === 1) {
         this.title = "一级行业设置";
+      } else {
+        this.title = "新增一级行业";
       }
       if (id) {
         if (this.title == "一级行业设置") {
@@ -213,7 +215,7 @@ export default {
           }
         });
       } else {
-        if (this.title == "一级行业设置") {
+        if (this.title == "新增一级行业") {
           this.showdialogForm = true;
         }
       }

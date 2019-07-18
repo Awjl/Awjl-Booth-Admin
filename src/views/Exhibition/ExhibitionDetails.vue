@@ -272,9 +272,14 @@ export default {
           this.upDataList.title = res.data.title;
           this.upDataList.location = res.data.location;
           this.upDataList.oneIndustry = res.data.oneIndustryid;
-          this.dataItem = this.dataList[
-            this.upDataList.oneIndustry - 1
-          ].secondIndustries;
+          // this.dataItem = this.dataList[
+          //   this.upDataList.oneIndustry - 1
+          // ].secondIndustries;
+          for (let i = 0; i < this.dataList.length; i++) {
+            if (this.dataList[i].id === this.upDataList.oneIndustry) {
+              this.dataItem = this.dataList[i].secondIndustries;
+            }
+          }
           this.upDataList.twoIndustry = res.data.twoIndustryid;
           this.upDataList.summary = res.data.summary;
           this.upDataList.date = res.data.date;
@@ -288,13 +293,23 @@ export default {
       });
     },
     currentSel() {
-      this.upDataList.twoIndustry = "";
-      // this.upDataList.industryName = this.dataList[
+      //  this.dataList = res.data;
+      //   this.dataItem = this.dataList[0].secondIndustries;
+      // this.upDataList.oneIndustry = res.data.oneIndustryid;
+
+      // this.upDataList.twoIndustry = "";
+      // // this.upDataList.industryName = this.dataList[
+      // //   this.upDataList.oneIndustry - 1
+      // // ].industryName;
+      // this.dataItem = this.dataList[
       //   this.upDataList.oneIndustry - 1
-      // ].industryName;
-      this.dataItem = this.dataList[
-        this.upDataList.oneIndustry - 1
-      ].secondIndustries;
+      // ].secondIndustries;
+      for (let i = 0; i < this.dataList.length; i++) {
+        if (this.dataList[i].id === this.upDataList.oneIndustry) {
+          this.dataItem = this.dataList[i].secondIndustries;
+          this.upDataList.twoIndustry =  this.dataItem[0].id;
+        }
+      }
     },
     delImgOne() {
       this.upDataList.summaryPicUrl = "";

@@ -235,10 +235,10 @@
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
               <label for="up1">预览图片</label>
-              <input type="file" id="up1" value="图片上传预览" @change="uplogo">
+              <input type="file" id="up1" value="图片上传预览" @change="uplogo" />
             </div>
             <div v-if="filebaseurl" style="width: 300px;">
-              <img :src="filebaseurl" alt>
+              <img :src="filebaseurl" alt />
             </div>
           </el-form-item>
         </el-col>
@@ -253,7 +253,7 @@
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
               <label for="uplist">预览图片</label>
-              <input type="file" id="uplist" value="图片上传预览" @change="upImg">
+              <input type="file" id="uplist" value="图片上传预览" @change="upImg" />
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataimgList" :key="index">
@@ -261,7 +261,7 @@
                   class="UpImgButton"
                   @click="removeButton(item.picture.ossId,item.picture.id, index)"
                 >删除</div>
-                <img :src="item.picture.url" alt style="width: 80px;height:80px;">
+                <img :src="item.picture.url" alt style="width: 80px;height:80px;" />
                 <div style="width: 80px;">
                   <input
                     type="text"
@@ -269,7 +269,7 @@
                     v-model="item.picture.description"
                     style="width: 80px;"
                     @change="setData(item)"
-                  >
+                  />
                 </div>
               </div>
             </div>
@@ -280,7 +280,7 @@
             <span style="position: absolute;top:20px;left:0px;color:red"></span>
             <div class="upbtn">
               <label for="uplisttow">预览图片</label>
-              <input type="file" id="uplisttow" value="图片上传预览" @change="upImg">
+              <input type="file" id="uplisttow" value="图片上传预览" @change="upImg" />
             </div>
             <div class="pictureList">
               <div v-for="(item, index) in dataAll.params" :key="index">
@@ -288,14 +288,14 @@
                   class="UpImgButton"
                   @click="removeButton(item.picture.ossId, item.picture.id,index)"
                 >删除</div>
-                <img :src="item.url" alt style="width: 80px;height:80px;">
+                <img :src="item.url" alt style="width: 80px;height:80px;" />
                 <div style="width: 80px;">
                   <input
                     type="text"
                     placeholder="请输入图片说明"
                     v-model="item.description"
                     style="width: 80px;"
-                  >
+                  />
                 </div>
               </div>
             </div>
@@ -469,13 +469,12 @@ export default {
   },
   methods: {
     currentSel() {
-      this.items = this.industryData[
-        this.dataAll.oneIndustry - 1
-      ].secondIndustries;
-
-      this.dataAll.twoIndustry = this.industryData[
-        this.dataAll.oneIndustry - 1
-      ].secondIndustries[0].id;
+      for (let i = 0; i < this.industryData.length; i++) {
+        if (this.industryData[i].id === this.dataAll.oneIndustry) {
+          this.items = this.industryData[i].secondIndustries;
+           this.dataAll.twoIndustry = this.industryData[i].secondIndustries[0].id;
+        }
+      }
     },
     //获取行业列表
     _getIndustry() {
@@ -544,10 +543,14 @@ export default {
           this.dataAll.twoIndustry = res.data.user.twoIndustryid;
           this.dataAll.mobile = res.data.user.linkmanMobile;
           this.dataAll.position = res.data.user.linkmanPosition;
-
-          this.items = this.industryData[
-            this.dataAll.oneIndustry - 1
-          ].secondIndustries;
+          for (let i = 0; i < this.industryData.length; i++) {
+            if (this.industryData[i].id === this.dataAll.oneIndustry) {
+              this.items = this.industryData[i].secondIndustries;
+            }
+          }
+          // this.items = this.industryData[
+          //   this.dataAll.oneIndustry - 1
+          // ].secondIndustries;
         }
       });
     },
@@ -713,9 +716,7 @@ export default {
             formDataTwo.append("description", "");
             formDataTwo.append(
               "url",
-              `http://booth1.oss-cn-shanghai.aliyuncs.com/${
-                res.data.data
-              }?x-oss-process=image/format,png`
+              `http://booth1.oss-cn-shanghai.aliyuncs.com/${res.data.data}?x-oss-process=image/format,png`
             );
             formDataTwo.append("userId", this.$route.params.id);
             savePicture(formDataTwo).then(res => {
@@ -725,9 +726,7 @@ export default {
                   picture: {
                     createDate: "",
                     ossId: res.data.data.ossId,
-                    url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
-                      res.data.data.ossId
-                    }?x-oss-process=image/format,png`,
+                    url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${res.data.data.ossId}?x-oss-process=image/format,png`,
                     id: "",
                     userId: this.$route.params.id,
                     description: ""
@@ -738,9 +737,7 @@ export default {
           } else {
             this.dataAll.params.push({
               ossId: res.data.data,
-              url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${
-                res.data.data
-              }?x-oss-process=image/format,png`,
+              url: `http://booth1.oss-cn-shanghai.aliyuncs.com/${res.data.data}?x-oss-process=image/format,png`,
               description: ""
             });
             console.log(this.dataAll.params);

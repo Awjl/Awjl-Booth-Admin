@@ -134,12 +134,15 @@
               <el-input placeholder="请输入内容" size="mini" v-model="add1"></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(1)"></el-button>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.keywords"
-              :key="index"
-              v-show="item.key!='点击输入'"
-            >{{item.key}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.keywords" :key="index">
+              {{item.key}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(1, index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -148,12 +151,15 @@
               <el-input placeholder="请输入内容" size="mini" v-model="add2"></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(2)"></el-button>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.competitor"
-              :key="index"
-              v-show="item.key!='点击输入'"
-            >{{item.key}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.competitor" :key="index">
+              {{item.key}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(2,index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -162,12 +168,15 @@
               <el-input placeholder="请输入内容" size="mini" v-model="add3"></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(3)"></el-button>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.supplier"
-              :key="index"
-              v-show="item.key!='点击输入'"
-            >{{item.key}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.supplier" :key="index">
+              {{item.key}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(3, index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -176,12 +185,15 @@
               <el-input placeholder="请输入内容" size="mini" v-model="add4"></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(4)"></el-button>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.customer"
-              :key="index"
-              v-show="item.key!='点击输入'"
-            >{{item.key}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.customer" :key="index">
+              {{item.key}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(4, index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -192,12 +204,15 @@
               <el-input placeholder="请输入内容" size="mini" v-model="add5"></el-input>
               <el-button type="primary" icon="el-icon-plus" size="mini" @click="add(5)"></el-button>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.facilitator"
-              :key="index"
-              v-show="item.key!='点击输入'"
-            >{{item.key}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.facilitator" :key="index">
+              {{item.key}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(5, index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -221,11 +236,15 @@
                 >{{item.name}}</div>
               </div>
             </div>
-            <div
-              class="datatext"
-              v-for="(item, index) in dataAll.exhibitions"
-              :key="index"
-            >{{item.name}}</div>
+            <div class="datatext" v-for="(item, index) in dataAll.exhibitions" :key="index">
+              {{item.name}}
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="removeadd(6, index)"
+              ></el-button>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -340,49 +359,13 @@ export default {
         linkmanEmail: "",
         oneIndustry: "",
         twoIndustry: "",
-        keywords: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
-        mainProcess: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
+        keywords: [],
+        mainProcess: [],
         summary: "",
-        supplier: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
-        competitor: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
-        customer: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
-        facilitator: [
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" },
-          { key: "点击输入" }
-        ],
+        supplier: [],
+        competitor: [],
+        customer: [],
+        facilitator: [],
         exhibitions: [],
         params: [],
         logoPic: [],
@@ -472,7 +455,9 @@ export default {
       for (let i = 0; i < this.industryData.length; i++) {
         if (this.industryData[i].id === this.dataAll.oneIndustry) {
           this.items = this.industryData[i].secondIndustries;
-           this.dataAll.twoIndustry = this.industryData[i].secondIndustries[0].id;
+          this.dataAll.twoIndustry = this.industryData[
+            i
+          ].secondIndustries[0].id;
         }
       }
     },
@@ -530,12 +515,25 @@ export default {
           // this.dataAll = res.data.user;
           this.filebaseurl = this.dataAll.logoUrl;
 
-          this.dataAll.keywords = JSON.parse(this.dataAll.keywords);
-          this.dataAll.mainProcess = JSON.parse(this.dataAll.mainProcess);
-          this.dataAll.supplier = JSON.parse(this.dataAll.supplier);
-          this.dataAll.competitor = JSON.parse(this.dataAll.competitor);
-          this.dataAll.customer = JSON.parse(this.dataAll.customer);
-          this.dataAll.facilitator = JSON.parse(this.dataAll.facilitator);
+          this.dataAll.keywords = this.dataAll.keywords
+            ? JSON.parse(this.dataAll.keywords)
+            : [];
+          this.dataAll.mainProcess = this.dataAll.mainProcess
+            ? JSON.parse(this.dataAll.mainProcess)
+            : [];
+
+          this.dataAll.supplier = this.dataAll.supplier
+            ? JSON.parse(this.dataAll.supplier)
+            : [];
+          this.dataAll.competitor = this.dataAll.competitor
+            ? JSON.parse(this.dataAll.competitor)
+            : [];
+          this.dataAll.customer = this.dataAll.customer
+            ? JSON.parse(this.dataAll.customer)
+            : [];
+          this.dataAll.facilitator = this.dataAll.facilitator
+            ? JSON.parse(this.dataAll.facilitator)
+            : [];
           this.dataAll.exhibitions = JSON.parse(
             this.dataAll.interestedExhibitions
           );
@@ -764,54 +762,72 @@ export default {
     add(num) {
       switch (num) {
         case 1:
-          for (let i = 0; i < this.dataAll.keywords.length; i++) {
-            if (this.dataAll.keywords[i].key === "点击输入") {
-              this.dataAll.keywords[i].key = this.add1;
-              return;
-            }
+          if (this.add1) {
+            let obj = { key: this.add1 };
+            this.dataAll.keywords.push(obj);
+            this.add1 = "";
           }
           break;
         case 2:
-          for (let i = 0; i < this.dataAll.competitor.length; i++) {
-            if (this.dataAll.competitor[i].key === "点击输入") {
-              this.dataAll.competitor[i].key = this.add2;
-              return;
-            }
+          if (this.add2) {
+            let obj = { key: this.add2 };
+            this.dataAll.competitor.push(obj);
+            this.add2 = "";
           }
           break;
         case 3:
-          for (let i = 0; i < this.dataAll.supplier.length; i++) {
-            if (this.dataAll.supplier[i].key === "点击输入") {
-              this.dataAll.supplier[i].key = this.add3;
-              return;
-            }
+          if (this.add3) {
+            let obj = { key: this.add3 };
+            this.dataAll.supplier.push(obj);
+            this.add3 = "";
           }
           break;
         case 4:
-          for (let i = 0; i < this.dataAll.customer.length; i++) {
-            if (this.dataAll.customer[i].key === "点击输入") {
-              this.dataAll.customer[i].key = this.add4;
-              return;
-            }
+          if (this.add4) {
+            let obj = { key: this.add4 };
+            this.dataAll.customer.push(obj);
+            this.add4 = "";
           }
           break;
         case 5:
-          for (let i = 0; i < this.dataAll.facilitator.length; i++) {
-            if (this.dataAll.facilitator[i].key === "点击输入") {
-              this.dataAll.facilitator[i].key = this.add5;
-              return;
-            }
+          if (this.add5) {
+            let obj = { key: this.add5 };
+            this.dataAll.facilitator.push(obj);
+            this.add5 = "";
           }
           break;
         case 6:
-          // this.add6 = item.name;
-          // this.add6ID = item.id;
           this.dataAll.exhibitions.push({
             name: this.add6,
             state: 1,
             numID: this.add6ID,
             id: 0
           });
+          break;
+        default:
+          break;
+      }
+    },
+    removeadd(num, index) {
+      // console.log(num);
+      switch (num) {
+        case 1:
+          this.dataAll.keywords.splice(index, 1);
+          break;
+        case 2:
+          this.dataAll.competitor.splice(index, 1);
+          break;
+        case 3:
+          this.dataAll.supplier.splice(index, 1);
+          break;
+        case 4:
+          this.dataAll.customer.splice(index, 1);
+          break;
+        case 5:
+          this.dataAll.facilitator.splice(index, 1);
+          break;
+        case 6:
+          this.dataAll.exhibitions.splice(index, 1);
           break;
         default:
           break;
@@ -845,8 +861,19 @@ img {
   min-height: 700px;
 }
 .datatext {
-  line-height: 20px;
+  width: 100%;
+  line-height: 30px;
+  padding-right: 39px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-bottom: 10px;
+  position: relative;
+}
+.datatext .el-button {
+  position: absolute;
+  padding: 7px 10px;
+  right: 0px;
 }
 .participateList,
 .participateList li {

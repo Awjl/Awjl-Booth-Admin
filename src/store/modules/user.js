@@ -71,6 +71,7 @@ const user = {
         login(userInfo).then(response => {
           const data = response.data
           console.log(data)
+          window.sessionStorage.setItem('userId', data)
           setToken(data.token)
           // setAdminData(data.adminData)
           // setDiscountData(data.discountData)

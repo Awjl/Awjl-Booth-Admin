@@ -1,6 +1,15 @@
 import { api } from './config'
 import axios from 'axios'
 
+
+// 修改密码
+export function changePassword(data) {
+  const url = `${api}/sys/updatePassword`
+  return axios.post(url, data).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+
 export function login(data) {
   const url = `${api}/sys/login`
   return axios.post(url, {
@@ -106,7 +115,7 @@ export function getAllCompany(data) {
       secondIndustryId: data.secondIndustryId,
       isRecommend: data.isRecommend,
       isAuthenticate: data.isAuthenticate,
-      isActivate:  data.isActivate,
+      isActivate: data.isActivate,
       beginDate: data.beginDate,
       endDate: data.endDate,
       pageNum: data.pageNum,
@@ -658,11 +667,11 @@ export function savePicture(data) {
 // 删除
 export function deletePicture(ossId, id) {
   return axios({
-      url: `${api}/user/deleteCompanyPic`,
-      method: "post",
-      data: {
-        ossId: ossId,
-        id: id,  
+    url: `${api}/user/deleteCompanyPic`,
+    method: "post",
+    data: {
+      ossId: ossId,
+      id: id,
     },
   });
 }

@@ -78,6 +78,7 @@ export default {
             .then(() => {
               this.loading = false;
               this.$router.push({ path: "/" });
+              window.sessionStorage.setItem('userName', this.loginForm.username);
             })
             .catch(() => {
               this.$message({

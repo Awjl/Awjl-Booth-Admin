@@ -1,25 +1,30 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">管理员:admin</div>
+    <div class="dashboard-text">管理员:{{admin}}</div>
     <!-- <div class="dashboard-text">职责:<span v-for='role in roles' :key='role'>{{role}}</span></div> -->
     <admin-dashboard></admin-dashboard>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import adminDashboard from './admin'
+import { mapGetters } from "vuex";
+import adminDashboard from "./admin";
 
 export default {
   components: { adminDashboard },
-  name: 'dashboard',
+  name: "dashboard",
   computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
+    ...mapGetters(["name", "roles"])
+  },
+  data() {
+    return {
+      admin: ""
+    };
+  },
+  created() {
+    this.admin = window.sessionStorage.getItem("userName");
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

@@ -21,7 +21,7 @@
       <div class="he20"></div>
       <el-table :data="dataAll.list" border style="width: 100%" v-loading="loading">
         <el-table-column prop="id" label="ID" align="center"></el-table-column>
-        <el-table-column prop="title" label="会展名称" align="center"></el-table-column>
+        <el-table-column prop="exhibitionName" label="会展名称" align="center"></el-table-column>
         <el-table-column prop="industryName" label="所属行业" align="center"></el-table-column>
         <el-table-column prop="date" label="会展时间" align="center"></el-table-column>
         <el-table-column prop="companyName" label="报名企业" align="center"></el-table-column>

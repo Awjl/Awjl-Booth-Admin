@@ -45,7 +45,7 @@
           <el-table-column prop="url" label="图片展示" align="center">
             <template slot-scope="scope">
               <div class="box-img">
-                <img :src="scope.row.url" alt align="center">
+                <img :src="scope.row.url" alt align="center" />
               </div>
             </template>
           </el-table-column>
@@ -141,9 +141,9 @@
         <el-form-item label="添加图片">
           <div class="upbtn">
             <label for="up">预览图片</label>
-            <input @change="upimages" type="file" id="up" value="图片上传预览">
+            <input @change="upimages" type="file" id="up" value="图片上传预览" />
           </div>
-          <img :src="newBanner.imagesUrl" v-if="newBanner.imagesUrl">
+          <img :src="newBanner.imagesUrl" v-if="newBanner.imagesUrl" />
           <span style="position: absolute;top:20px;left:0px;color:red"></span>
         </el-form-item>
       </el-form>
@@ -198,7 +198,7 @@ export default {
       newBanner: {
         id: "",
         title: "",
-        oneIndustry: 1,
+        oneIndustry: null,
         twoIndustry: null,
         imagesUrl: "",
         area: 1,
@@ -241,9 +241,14 @@ export default {
           this.newBanner.title = res.data.title;
           this.newBanner.oneIndustry = res.data.oneIndustryid;
           console.log(this.newBanner);
-          this.dataItem = this.dataList[
-            this.newBanner.oneIndustry - 1
-          ].secondIndustries;
+          for (let i = 0; i < this.dataList.length; i++) {
+            if (this.dataList[i].id === this.newBanner.oneIndustry) {
+              this.dataItem = this.dataList[i].secondIndustries;
+            }
+          }
+          // this.dataItem = this.dataList[
+          //   this.newBanner.oneIndustry - 1
+          // ].secondIndustries;
           this.newBanner.twoIndustry = res.data.twoIndustryid;
           this.newBanner.imagesUrl = res.data.url;
           this.newBanner.industryName = res.data.industryName;
@@ -283,7 +288,10 @@ export default {
     _getIndustry() {
       getIndustry().then(res => {
         this.dataList = res.data;
+        // console.log(this.newBanner.oneIndustry)
         this.dataItem = this.dataList[0].secondIndustries;
+        this.newBanner.oneIndustry = this.dataList[0].id;
+        this.newBanner.twoIndustry = this.dataItem[0].id;
       });
     },
     _getAllAdvert() {
@@ -347,12 +355,12 @@ export default {
     },
     currentSel() {
       this.newBanner.twoIndustry = "";
-      this.newBanner.industryName = this.dataList[
-        this.newBanner.oneIndustry - 1
-      ].industryName;
-      this.dataItem = this.dataList[
-        this.newBanner.oneIndustry - 1
-      ].secondIndustries;
+      for (let i = 0; i < this.dataList.length; i++) {
+        if (this.dataList[i].id === this.newBanner.oneIndustry) {
+          this.dataItem = this.dataList[i].secondIndustries;
+          this.newBanner.twoIndustry = this.dataItem[0].id;
+        }
+      }
     },
     currentSelTwo(vId) {
       let obj = {};
@@ -366,7 +374,7 @@ export default {
       this.newBanner = {
         id: "",
         title: "",
-        oneIndustry: 1,
+        oneIndustry: '',
         twoIndustry: null,
         imagesUrl: "",
         area: 1,
@@ -383,7 +391,7 @@ export default {
       this.newBanner = {
         id: "",
         title: "",
-        oneIndustry: 1,
+        oneIndustry: '',
         twoIndustry: null,
         imagesUrl: "",
         area: 1,
